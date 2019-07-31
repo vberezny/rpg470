@@ -8,10 +8,10 @@ import (
 
 // Up is executed when this migration is applied
 func Up_20190728155355(txn *sql.Tx) {
-	_, err := txn.Exec(`ALTER TABLE characters ADD COLUMN Experience INT NOT NULL;`)
+	_, err := txn.Exec(`ALTER TABLE characters ADD COLUMN Experience INT NOT NULL DEFAULT 0;`)
 
 	if err != nil {
-		log.Fatalf("fatal error while running usersessions userid uniqueness migration %v", err)
+		log.Fatalf("fatal error while running add xp column to character table migration %v", err)
 	}
 }
 
@@ -20,6 +20,6 @@ func Down_20190728155355(txn *sql.Tx) {
 	_, err := txn.Exec(`ALTER TABLE characters DROP COLUMN Experience;`)
 
 	if err != nil {
-		log.Fatalf("fatal error while running usersessions userid uniqueness migration %v", err)
+		log.Fatalf("fatal error while running add xp column to character table migration %v", err)
 	}
 }
