@@ -14,6 +14,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showCharacterNewlyCreatedToast: false,
       isAuthenticated: false,
       isCharacterSelected: false,
       currentCharacterName: ''
@@ -47,10 +48,17 @@ class App extends React.Component {
     });
   };
 
-  handleConfirmCharacterSelection = (currentCharacterName) => {
+  handleConfirmCharacterSelection = (currentCharacterName, showCharacterNewlyCreatedToast=false) => {
     this.setState({
+      showCharacterNewlyCreatedToast,
       isCharacterSelected: true,
       currentCharacterName
+    });
+  };
+
+  handleCloseCharacterNewlyCreatedToast = () => {
+    this.setState({
+      showCharacterNewlyCreatedToast: false
     });
   };
 
@@ -75,8 +83,10 @@ class App extends React.Component {
           exact
           path="/"
           component={() => this.handleRenderProtectedPage(<Home
+            showCharacterNewlyCreatedToast={this.state.showCharacterNewlyCreatedToast}
             isCharacterSelected={this.state.isCharacterSelected}
             currentCharacterName={this.state.currentCharacterName}
+            handleCloseCharacterNewlyCreatedToast={this.handleCloseCharacterNewlyCreatedToast}
             handleConfirmCharacterSelection={this.handleConfirmCharacterSelection}
             handleUnauthenticate={this.handleUnauthenticate}
           />)}

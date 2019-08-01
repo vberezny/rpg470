@@ -1,6 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Input, Table} from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardImg,
+  CardSubtitle,
+  CardText,
+  CardTitle,
+  Input,
+  Table,
+  Toast,
+  ToastHeader,
+  ToastBody
+} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import CustomSelectionModal from '../CustomSelectionModal/CustomSelectionModal';
@@ -17,6 +30,30 @@ import Zombie from '../../Assets/zombie.png';
 import Imp from '../../Assets/imp.png';
 import GrassMap from '../../Assets/grass_map.png';
 import BluePotion from '../../Assets/blue_potion.png';
+import {ReactComponent as Clear} from '../../Assets/CloseIcon24px.svg';
+
+// TODO: If possible, figure out how to fade out the toast message
+function NewCharacterToast(props) {
+  return (
+    <Toast isOpen={props.isOpen} className="mini-char-overview-new-character-toast bg-success">
+      <div className="mini-char-overview-new-character-toast-header">
+        <ToastHeader className="mini-char-overview-new-character-toast-header-text success-toast-text success-toast-header-text bg-success">
+          {STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_HEADER_MSG}
+        </ToastHeader>
+        <Button onClick={props.handleClose} className="mini-char-overview-new-character-toast-clear-button">
+          <Clear className="mini-char-overview-new-character-toast-clear-button-icon"/>
+        </Button>
+      </div>
+      <ToastBody className="mini-char-overview-new-character-toast-body success-toast-text success-toast-body-text">
+        {STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_BODY_MSG}
+      </ToastBody>
+    </Toast>
+  );
+}
+
+NewCharacterToast.propTypes = {
+  showCharacterNewlyCreatedToast: PropTypes.bool
+};
 
 function SelectCharacterModal(props) {
   let characters;
@@ -125,9 +162,16 @@ class Home extends React.Component {
   renderMiniCharacterOverview = () => {
     const miniCharOverviewHeader = this.state.character.name ? STRINGS.HOME_MINI_CHAR_OVERVIEW_HEADER_MSG + `${this.state.character.name}!` : null;
     const characterLevel = this.state.character.level ? this.state.character.level.toString() : null;
+
     return (
       <div className="mini-char-overview showcase-container container">
-        <h2>{miniCharOverviewHeader}</h2>
+        <div className="mini-char-overview-header-wrapper">
+          <h2 className="mini-char-overview-header">{miniCharOverviewHeader}</h2>
+          <NewCharacterToast
+            isOpen={this.props.showCharacterNewlyCreatedToast}
+            handleClose={this.props.handleCloseCharacterNewlyCreatedToast}
+          />
+        </div>
         <div className="mini-char-overview-content">
           <Card className="mini-char-overview-card">
             <div className="mini-char-overview-wrapper">
@@ -351,8 +395,10 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
+  showCharacterNewlyCreatedToast: PropTypes.bool,
   isCharacterSelected: PropTypes.bool,
   currentCharacterName: PropTypes.string,
+  handleCloseCharacterNewlyCreatedToast: PropTypes.func,
   handleConfirmCharacterSelection: PropTypes.func,
   handleUnauthenticate: PropTypes.func
 };

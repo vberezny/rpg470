@@ -55,10 +55,10 @@ function CustomNavbar(props) {
                 {STRINGS.NAVBAR_NAV_CHARACTER_MSG}
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
+                <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_CHARACTER_DROPDOWN_OVERVIEW_MSG}
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_CHARACTER_DROPDOWN_INVENTORY_MSG}
                 </DropdownItem>
                 <DropdownItem disabled>

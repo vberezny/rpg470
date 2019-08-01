@@ -24,7 +24,6 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
 import Goblin from "../../Assets/goblin.png";
-import CreateCharacter from "../CreateCharacter/CreateCharacter";
 
 function CharacterCard(props) {
   const character = props.character;
