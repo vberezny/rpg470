@@ -273,6 +273,7 @@ class Battle extends React.Component {
       if (this.props.location) {
         const isNPCSelected = this.props.location.state.isNPCSelected;
         const npcSelection = this.props.location.state.npcSelection;
+        // skips npc selection modal if npc is already selected from home page
         if (isNPCSelected) {
           this.setState({
             isNPCSelected: true,
@@ -325,7 +326,7 @@ class Battle extends React.Component {
     } else {
       // TODO: log the action, maybe a popup saying escape failed, continue battle
       console.log("Escape unsuccessful!");
-      this.npcAttack();
+      setTimeout(this.npcAttack, 2000);
     }
   };
 
@@ -337,8 +338,7 @@ class Battle extends React.Component {
       damage = NUMBERS.BATTLE_DAMAGE_0;
     }
     this.calculateAndSetNewNPCHealth(damage);
-    // TODO: add delay
-    this.npcAttack();
+    setTimeout(this.npcAttack, 2000);
   };
 
   // TODO: will expand same as attack method
@@ -348,8 +348,7 @@ class Battle extends React.Component {
       damage = NUMBERS.BATTLE_DAMAGE_0;
     }
     this.calculateAndSetNewNPCHealth(damage);
-    // TODO: add delay
-    this.npcAttack();
+    setTimeout(this.npcAttack, 2000);
   };
 
   npcAttack = () => {
@@ -474,9 +473,6 @@ class Battle extends React.Component {
 Battle.propTypes = {
   handleUnauthenticate: PropTypes.func,
   currentCharacterName: PropTypes.string,
-  location: PropTypes.object,
-  isNPCSelected: PropTypes.bool,
-  npcSelection: PropTypes.string
 };
 
 export default withRouter(Battle);
