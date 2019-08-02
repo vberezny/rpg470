@@ -24,7 +24,7 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
 import Goblin from "../../Assets/goblin.png";
-import {Link} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import CustomSelectionModal from "../CustomSelectionModal/CustomSelectionModal";
 
 function CharacterCard(props) {
@@ -228,13 +228,26 @@ SelectNPCModal.propTypes = {
   handleConfirmNPCSelection: PropTypes.func
 };
 
+function EscapeSuccessful(props) {
+  const success = props.EscapeSuccessful;
+  if (success) {
+    return <Redirect to="/"/>;
+  }
+  return null;
+}
+
+EscapeSuccessful.propTypes = {
+  EscapeSuccessful: PropTypes.bool
+};
+
+
 class Battle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      escapeSuccess: false,
       npcSelection: '',
       isNPCSelected: false,
-      // currentNPCName: '',
       winner: '',
       allNPCs: [],
       character: {},
@@ -264,14 +277,6 @@ class Battle extends React.Component {
       this.setState({
         allNPCs
       });
-      // allNPCs.forEach(npc => {
-      //   if (npc.name === this.state.currentNPCName) {
-      //     npc.currentHealth = npc.health;
-      //     this.setState({
-      //       npc
-      //     });
-      //   }
-      // });
     }
   }
 
@@ -300,11 +305,15 @@ class Battle extends React.Component {
 
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
-    if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {      // allowed to escape
-      // TODO: log the action, save the battle, redirect to home
-      console.log("Escape successful!");
-    } else {                  // not allowed to escape
+    if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {
+      // TODO: log the action, save the battle
+      this.setState({
+        escapeSuccess: true
+      });
+      // TODO: popup saying escape succeeded
+    } else {
       // TODO: log the action, maybe a popup saying escape failed, continue battle
+      // TODO: popup saying escape succeeded
       console.log("Escape unsuccessful!");
       this.npcAttack();
     }
@@ -388,6 +397,7 @@ class Battle extends React.Component {
   render() {
     return (
       <div className="battle-page page-container">
+        <EscapeSuccessful EscapeSuccessful={this.state.escapeSuccess} />
         <CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
          {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="battle-centered-content full-viewport-with-navbar centered content container">
@@ -407,8 +417,6 @@ class Battle extends React.Component {
               </div>
               <h3 className="battle-container-header-text">{STRINGS.BATTLE_CONTAINER_HEADER_MSG}</h3>
               <div className="battle-buttons-container container">
-                {/*TODO: maybe make these into dropdowns, each with their own respective selections*/}
-                {/*TODO: OR make these into modals that contain all available attacks or items or whatever*/}
                 <Button
                     className="attack-button battle-button"
                     color="danger"
