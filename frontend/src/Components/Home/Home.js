@@ -169,10 +169,6 @@ class Home extends React.Component {
     });
   };
 
-  // handleNPCBattleSetup = (npcName) => {
-  //   this.props.handleConfirmNPCSelected(npcName);
-  // };
-
   renderMiniCharacterOverview = () => {
     const miniCharOverviewHeader = this.state.character.name ? STRINGS.HOME_MINI_CHAR_OVERVIEW_HEADER_MSG + `${this.state.character.name}!` : null;
     const characterLevel = this.state.character.level ? this.state.character.level.toString() : null;
