@@ -18,6 +18,10 @@ const STRINGS = {
   BATTLE_SELECT_NPC_MODAL_HEADER_MSG: 'Select the NPC you wish to battle',
   BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG: 'Battle',
   BATTLE_SELECT_NPC_MODAL_NO_NPCS_MSG: 'NPCs unavailable',
+  BATTLE_RESULT_MODAL_HEADER_ESCAPE_MSG: 'You successfully escaped from the ',
+  BATTLE_RESULT_MODAL_HEADER_LOSS_MSG: 'You were defeated by the ',
+  BATTLE_RESULT_MODAL_HEADER_WIN_MSG: 'You defeated the ',
+  BATTLE_RESULT_MODAL_BODY_MSG: 'Select one of the options below to continue your adventure'
 };
 
 const NUMBERS = {

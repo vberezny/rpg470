@@ -12,6 +12,10 @@ import {
   ListGroupItem,
   Progress,
   Table,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader
 } from 'reactstrap';
 import {NUMBERS, STRINGS} from '../../Constants/BattleConstants';
 import {GLOBAL_STRINGS, GLOBAL_URLS} from '../../Constants/GlobalConstants';
@@ -196,22 +200,22 @@ function SelectNPCModal(props) {
   }
 
   const modalHeader = (
-      <div className="select-npc-modal-header">{STRINGS.BATTLE_SELECT_NPC_MODAL_HEADER_MSG}</div>
+    <div className="select-npc-modal-header">{STRINGS.BATTLE_SELECT_NPC_MODAL_HEADER_MSG}</div>
   );
   const modalBody = (
-      <div className="select-npc-modal-card-container card-container">{npcs}</div>
+    <div className="select-npc-modal-card-container card-container">{npcs}</div>
   );
 
   return (
-      <CustomSelectionModal
-          modalHeader={modalHeader}
-          modalBody={modalBody}
-          selectionButtonText={STRINGS.BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG}
-          className="select-npc-modal"
-          isOpen={!props.isNPCSelected}
-          selectButtonDisabled={!props.npcSelection}
-          onSelect={() => props.handleConfirmNPCSelection(props.npcSelection)}
-      />
+    <CustomSelectionModal
+      modalHeader={modalHeader}
+      modalBody={modalBody}
+      selectionButtonText={STRINGS.BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG}
+      className="select-npc-modal"
+      isOpen={!props.isNPCSelected}
+      selectButtonDisabled={!props.npcSelection}
+      onSelect={() => props.handleConfirmNPCSelection(props.npcSelection)}
+    />
   );
 }
 
@@ -223,16 +227,49 @@ SelectNPCModal.propTypes = {
   handleConfirmNPCSelection: PropTypes.func
 };
 
-function EscapeSuccessful(props) {
-  const success = props.EscapeSuccessful;
-  if (success) {
-    return <Redirect to="/"/>;
+// function EscapeSuccessful(props) {
+//   const success = props.EscapeSuccessful;
+//   if (success) {
+//     return <Redirect to="/"/>;
+//   }
+//   return null;
+// }
+//
+// EscapeSuccessful.propTypes = {
+//   EscapeSuccessful: PropTypes.bool
+// };
+
+function BattleResultsModal(props) {
+  const className = "battle-results-modal";
+  let headerMessage;
+  if (props.escapeSuccess) {
+    headerMessage = STRINGS.BATTLE_RESULT_MODAL_HEADER_ESCAPE_MSG + props.npcName;
+  } else if (props.winner === props.npcName) {
+    headerMessage = STRINGS.BATTLE_RESULT_MODAL_HEADER_LOSS_MSG + props.npcName;
+  } else {
+    headerMessage = STRINGS.BATTLE_RESULT_MODAL_HEADER_WIN_MSG + props.npcName;
   }
-  return null;
+
+  const bodyMessage = STRINGS.BATTLE_RESULT_MODAL_BODY_MSG;
+
+  return (
+    <Modal isOpen={props.winner || props.escapeSuccess} className={className}>
+      <ModalHeader>{headerMessage}</ModalHeader>
+      <ModalBody>{bodyMessage}</ModalBody>
+      <ModalFooter>
+        {/*TODO: onclick reload the battle page with the npc selection modal popping up*/}
+        <Button color="primary">Another Battle</Button>
+        {/*TODO: onclick redirect to home*/}
+        <Button color="secondary">Home</Button>
+      </ModalFooter>
+    </Modal>
+  );
 }
 
-EscapeSuccessful.propTypes = {
-  EscapeSuccessful: PropTypes.bool
+BattleResultsModal.propTypes = {
+  escapeSuccess: PropTypes.bool,
+  winner: PropTypes.string,
+  npcName: PropTypes.string
 };
 
 
@@ -322,10 +359,9 @@ class Battle extends React.Component {
       this.setState({
         escapeSuccess: true
       });
-      // TODO: toast saying escape succeeded
     } else {
-      // TODO: log the action, maybe a popup saying escape failed, continue battle
-      console.log("Escape unsuccessful!");
+      // TODO: log the action, continue battle
+      console.log("You attempted to escape but were unsuccessful");
       setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
     }
   };
@@ -406,7 +442,12 @@ class Battle extends React.Component {
   render() {
     return (
       <div className="battle-page page-container">
-        <EscapeSuccessful EscapeSuccessful={this.state.escapeSuccess} />
+        <BattleResultsModal
+            winner={this.state.winner}
+            escapeSuccess={this.state.escapeSuccess}
+            npcName={this.state.npc.name}
+        />
+        {/*<EscapeSuccessful EscapeSuccessful={this.state.escapeSuccess} />*/}
         <CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
          {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="battle-centered-content full-viewport-with-navbar centered content container">
