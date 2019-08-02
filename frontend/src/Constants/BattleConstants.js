@@ -16,6 +16,8 @@ const STRINGS = {
   BATTLE_BUTTON_INVENTORY: 'Inventory',
   BATTLE_BUTTON_ESCAPE: 'Run Away',
   BATTLE_SELECT_NPC_MODAL_HEADER_MSG: 'Select the NPC you wish to battle',
+  BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG: 'Battle',
+  BATTLE_SELECT_NPC_MODAL_NO_NPCS_MSG: 'NPCs unavailable'
 };
 
 const NUMBERS = {

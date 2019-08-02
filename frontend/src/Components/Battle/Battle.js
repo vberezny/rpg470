@@ -148,24 +148,55 @@ function SelectNPCModal(props) {
     npcs = props.npcs.map((npc, index) => {
       const npcLevel = npc.level ? npc.level.toString() : null;
       return (
-          <div className="select-npc-card-wrapper" key={index}>
-            <Card className="">
-              <CardImg className="cardimg" src={PrincessAvatar} />
-              <CardBody className="cardbody">
-                <CardTitle className="cardtitle cardtext-color">{npc.name}</CardTitle>
-                <CardSubtitle className="cardsubtitle">{STRINGS.HOME_LEVEL_MSG + npcLevel}</CardSubtitle>
-              </CardBody>
-            </Card>
-            <div className="select-npc-label-wrapper">
-              <Input id={npc.name} type="radio" name="npc-select" onChange={props.handleChangeCharacterSelection}/>
+        <div className="select-npc-card-wrapper" key={index}>
+          <Card className="">
+            <CardImg className="cardimg" src={Goblin} />
+            <CardBody className="cardbody">
+              <CardTitle className="cardtitle cardtext-color">{npc.name}</CardTitle>
+              <CardSubtitle className="cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + npcLevel}</CardSubtitle>
+            </CardBody>
+            <div className="char-overview-stats overview-stats">
+              <Table>
+                <thead>
+                <tr>
+                  <th>{STRINGS.BATTLE_STAT_MSG}</th>
+                  <th>{STRINGS.BATTLE_VALUE_MSG}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>{STRINGS.BATTLE_HEALTH_STAT_MSG}</td>
+                  <td>{npc.health}</td>
+                </tr>
+                <tr>
+                  <td>{STRINGS.BATTLE_ATTACK_STAT_MSG}</td>
+                  <td>{npc.attack}</td>
+                </tr>
+                <tr>
+                  <td>{STRINGS.BATTLE_DEFENSE_STAT_MSG}</td>
+                  <td>{npc.defense}</td>
+                </tr>
+                <tr>
+                  <td>{STRINGS.BATTLE_MAGIC_ATTACK_STAT_MSG}</td>
+                  <td>{npc.magic_attack}</td>
+                </tr>
+                <tr>
+                  <td>{STRINGS.BATTLE_MAGIC_DEFENSE_STAT_MSG}</td>
+                  <td>{npc.magic_defense}</td>
+                </tr>
+                </tbody>
+              </Table>
             </div>
+          </Card>
+          <div className="select-npc-label-wrapper">
+            <Input id={npc.name} type="radio" name="npc-select" onChange={props.handleChangeNPCSelection}/>
           </div>
+        </div>
       );
     });
   } else {
     npcs = <div>
-      <p className="select-npc-modal-no-npcs-msg">{STRINGS.HOME_SELECT_CHARACTER_MODAL_NO_CHARACTERS_MSG_PT_1}</p>
-      <p className="select-npc-modal-no-npcs-msg">{STRINGS.HOME_SELECT_CHARACTER_MODAL_NO_CHARACTERS_MSG_PT_2}</p>
+      <p className="select-npc-modal-no-npcs-msg">{STRINGS.BATTLE_SELECT_NPC_MODAL_NO_NPCS_MSG}</p>
     </div>
   }
 
@@ -180,26 +211,30 @@ function SelectNPCModal(props) {
       <CustomSelectionModal
           modalHeader={modalHeader}
           modalBody={modalBody}
-          selectionButtonText={STRINGS.HOME_SELECT_CHARACTER_MODAL_SELECT_BUTTON_MSG}
+          selectionButtonText={STRINGS.BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG}
           className="select-npc-modal"
-          isOpen={!props.isCharacterSelected}
+          isOpen={!props.isNPCSelected}
           selectButtonDisabled={!props.npcSelection}
-          onSelect={() => props.handleConfirmCharacterSelection(props.npcSelection)}
+          onSelect={() => props.handleConfirmNPCSelection(props.npcSelection)}
       />
   );
 }
 
 SelectNPCModal.propTypes = {
   npcs: PropTypes.array,
-  characterSelection: PropTypes.string,
-  handleChangeCharacterSelection: PropTypes.func,
-  handleConfirmCharacterSelection: PropTypes.func
+  npcSelection: PropTypes.string,
+  isNPCSelected: PropTypes.bool,
+  handleChangeNPCSelection: PropTypes.func,
+  handleConfirmNPCSelection: PropTypes.func
 };
 
 class Battle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      npcSelection: '',
+      isNPCSelected: false,
+      // currentNPCName: '',
       winner: '',
       allNPCs: [],
       character: {},
@@ -229,16 +264,39 @@ class Battle extends React.Component {
       this.setState({
         allNPCs
       });
-      allNPCs.forEach(npc => {
-        if (npc.name === this.props.currentNPCName) {
-          npc.currentHealth = npc.health;
-          this.setState({
-            npc
-          });
-        }
-      });
+      // allNPCs.forEach(npc => {
+      //   if (npc.name === this.state.currentNPCName) {
+      //     npc.currentHealth = npc.health;
+      //     this.setState({
+      //       npc
+      //     });
+      //   }
+      // });
     }
   }
+
+  handleChangeNPCSelection = (event) => {
+    const npcSelection = event.target.id;
+    this.setState({
+      npcSelection
+    });
+  };
+
+  handleConfirmNPCSelection = (currentNPCName) => {
+    this.setState({
+      isNPCSelected: true,
+      npcSelection: currentNPCName
+    });
+
+    this.state.allNPCs.forEach(npc => {
+      if (npc.name === this.state.npcSelection) {
+        npc.currentHealth = npc.health;
+        this.setState({
+          npc
+        });
+      }
+    });
+  };
 
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
@@ -335,10 +393,10 @@ class Battle extends React.Component {
         <div className="battle-centered-content full-viewport-with-navbar centered content container">
           <SelectNPCModal
               npcs={this.state.allNPCs}
-              characterSelection={this.state.characterSelection}
-              isCharacterSelected={this.props.isCharacterSelected}
-              handleChangeCharacterSelection={this.handleChangeCharacterSelection}
-              handleConfirmCharacterSelection={this.props.handleConfirmCharacterSelection}
+              npcSelection={this.state.npcSelection}
+              isNPCSelected={this.state.isNPCSelected}
+              handleChangeNPCSelection={this.handleChangeNPCSelection}
+              handleConfirmNPCSelection={this.handleConfirmNPCSelection}
           />
           <div className="battle-viewport-width">
             <h1 className="battle-header-text">{STRINGS.BATTLE_HEADER_MSG}</h1>
