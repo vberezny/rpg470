@@ -10,7 +10,7 @@ import {
   Table,
   CardBody,
   CardTitle,
-  CardSubtitle,
+  CardSubtitle, Input,
 } from 'reactstrap';
 import {
   STRINGS,
@@ -24,6 +24,8 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
 import Goblin from "../../Assets/goblin.png";
+import {Link} from "react-router-dom";
+import CustomSelectionModal from "../CustomSelectionModal/CustomSelectionModal";
 
 function CharacterCard(props) {
   const character = props.character;
@@ -140,12 +142,66 @@ NpcCard.propTypes = {
   npc: PropTypes.object
 };
 
+function SelectNPCModal(props) {
+  let npcs;
+  if (props.npcs.length > 0) {
+    npcs = props.npcs.map((npc, index) => {
+      const npcLevel = npc.level ? npc.level.toString() : null;
+      return (
+          <div className="select-npc-card-wrapper" key={index}>
+            <Card className="">
+              <CardImg className="cardimg" src={PrincessAvatar} />
+              <CardBody className="cardbody">
+                <CardTitle className="cardtitle cardtext-color">{npc.name}</CardTitle>
+                <CardSubtitle className="cardsubtitle">{STRINGS.HOME_LEVEL_MSG + npcLevel}</CardSubtitle>
+              </CardBody>
+            </Card>
+            <div className="select-npc-label-wrapper">
+              <Input id={npc.name} type="radio" name="npc-select" onChange={props.handleChangeCharacterSelection}/>
+            </div>
+          </div>
+      );
+    });
+  } else {
+    npcs = <div>
+      <p className="select-npc-modal-no-npcs-msg">{STRINGS.HOME_SELECT_CHARACTER_MODAL_NO_CHARACTERS_MSG_PT_1}</p>
+      <p className="select-npc-modal-no-npcs-msg">{STRINGS.HOME_SELECT_CHARACTER_MODAL_NO_CHARACTERS_MSG_PT_2}</p>
+    </div>
+  }
+
+  const modalHeader = (
+      <div className="select-npc-modal-header">{STRINGS.BATTLE_SELECT_NPC_MODAL_HEADER_MSG}</div>
+  );
+  const modalBody = (
+      <div className="select-npc-modal-card-container card-container">{npcs}</div>
+  );
+
+  return (
+      <CustomSelectionModal
+          modalHeader={modalHeader}
+          modalBody={modalBody}
+          selectionButtonText={STRINGS.HOME_SELECT_CHARACTER_MODAL_SELECT_BUTTON_MSG}
+          className="select-npc-modal"
+          isOpen={!props.isCharacterSelected}
+          selectButtonDisabled={!props.npcSelection}
+          onSelect={() => props.handleConfirmCharacterSelection(props.npcSelection)}
+      />
+  );
+}
+
+SelectNPCModal.propTypes = {
+  npcs: PropTypes.array,
+  characterSelection: PropTypes.string,
+  handleChangeCharacterSelection: PropTypes.func,
+  handleConfirmCharacterSelection: PropTypes.func
+};
+
 class Battle extends React.Component {
   constructor(props) {
     super(props);
-    this.currentNPCName = 'Imp';
     this.state = {
       winner: '',
+      allNPCs: [],
       character: {},
       npc: {}
     }
@@ -169,8 +225,12 @@ class Battle extends React.Component {
       });
     }
     if (bodyNPCs) {
-      bodyNPCs[GLOBAL_STRINGS.NPC_API_RESPONSE_INDEX].forEach(npc => {
-        if (npc.name === this.currentNPCName) {
+      const allNPCs = bodyNPCs[GLOBAL_STRINGS.NPC_API_RESPONSE_INDEX];
+      this.setState({
+        allNPCs
+      });
+      allNPCs.forEach(npc => {
+        if (npc.name === this.props.currentNPCName) {
           npc.currentHealth = npc.health;
           this.setState({
             npc
@@ -273,6 +333,13 @@ class Battle extends React.Component {
         <CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
          {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="battle-centered-content full-viewport-with-navbar centered content container">
+          <SelectNPCModal
+              npcs={this.state.allNPCs}
+              characterSelection={this.state.characterSelection}
+              isCharacterSelected={this.props.isCharacterSelected}
+              handleChangeCharacterSelection={this.handleChangeCharacterSelection}
+              handleConfirmCharacterSelection={this.props.handleConfirmCharacterSelection}
+          />
           <div className="battle-viewport-width">
             <h1 className="battle-header-text">{STRINGS.BATTLE_HEADER_MSG}</h1>
             <div className="battle-container container">
