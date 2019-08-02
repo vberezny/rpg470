@@ -338,7 +338,7 @@ class Battle extends React.Component {
       damage = NUMBERS.BATTLE_DAMAGE_0;
     }
     this.calculateAndSetNewNPCHealth(damage);
-    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL));
+    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   // TODO: will expand same as attack method
