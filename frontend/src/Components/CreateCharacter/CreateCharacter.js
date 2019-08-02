@@ -236,8 +236,8 @@ class CreateCharacter extends React.Component {
     });
     const body = await response.json();
     console.log(body);
-    this.props.handleConfirmCharacterSelection(this.state.characterName);
     this.props.history.push('/');
+    this.props.handleConfirmCharacterSelection(this.state.characterName, true);
   };
 
   handleChangeCharacterName = (event) => {

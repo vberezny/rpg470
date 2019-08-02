@@ -4,6 +4,41 @@
   .mini-char-overview {
     margin-top: 2rem;
 
+    .mini-char-overview-header-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mini-char-overview-new-character-toast {
+      min-width: 300px;
+      margin-bottom: 20px;
+
+      .mini-char-overview-new-character-toast-clear-button {
+        padding: 0;
+        float: right;
+        position: relative;
+        bottom: 35px;
+        right: 10px;
+      }
+
+      .mini-char-overview-new-character-toast-clear-button-icon {
+        position: relative;
+        bottom: 1px;
+      }
+
+      .success-toast-header-text {
+        font-size: 22px;
+      }
+
+      .success-toast-body-text {
+        font-size: 18px;
+      }
+
+      .success-toast-text {
+        color: #ffffff;
+      }
+    }
+
     .overview-intro-flex-container {
       display: flex;
       justify-content: center;
