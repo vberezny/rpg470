@@ -2,30 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
+  Card,
+  CardBody,
+  CardImg,
+  CardSubtitle,
+  CardTitle,
+  Input,
   ListGroup,
   ListGroupItem,
   Progress,
-  Card,
-  CardImg,
   Table,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Input,
 } from 'reactstrap';
-import {
-  STRINGS,
-  NUMBERS
-} from '../../Constants/BattleConstants';
-import {
-  GLOBAL_STRINGS,
-  GLOBAL_URLS
-} from '../../Constants/GlobalConstants';
+import {NUMBERS, STRINGS} from '../../Constants/BattleConstants';
+import {GLOBAL_STRINGS, GLOBAL_URLS} from '../../Constants/GlobalConstants';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
 import Goblin from "../../Assets/goblin.png";
-import {Redirect} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 import CustomSelectionModal from "../CustomSelectionModal/CustomSelectionModal";
 
 function CharacterCard(props) {
@@ -257,9 +251,6 @@ class Battle extends React.Component {
   };
 
   async componentDidMount() {
-    // const isNPCSelected = this.props.location.state.isNPCSelected;
-    // const npcSelection = this.props.location.state.npcSelection;
-    // console.log("npc: ", npcSelection, " isSel: ", isNPCSelected);
     const responseCharacters = await fetch(GLOBAL_URLS.GET_API_CHARACTERS);
     const responseNPCs = await fetch(GLOBAL_URLS.GET_API_NPCS);
     const bodyCharacters = await responseCharacters.json();
@@ -279,26 +270,25 @@ class Battle extends React.Component {
       this.setState({
         allNPCs
       });
-      // if (isNPCSelected) {
-      //   this.setState({
-      //     isNPCSelected: true,
-      //     npcSelection
-      //   });
-      //   allNPCs.forEach(npc => {
-      //     if (npc.name === this.state.npcSelection) {
-      //       npc.currentHealth = npc.health;
-      //       this.setState({
-      //         npc
-      //       });
-      //     }
-      //   });
-      // }
+      if (this.props.location) {
+        const isNPCSelected = this.props.location.state.isNPCSelected;
+        const npcSelection = this.props.location.state.npcSelection;
+        if (isNPCSelected) {
+          this.setState({
+            isNPCSelected: true,
+            npcSelection
+          });
+          allNPCs.forEach(npc => {
+            if (npc.name === this.state.npcSelection) {
+              npc.currentHealth = npc.health;
+              this.setState({
+                npc
+              });
+            }
+          });
+        }
+      }
     }
-    // TODO: if user selected specific npc to battle on home screen set npc and skip selection modal
-  }
-
-  componentWillReceiveProps() {
-
   }
 
   handleChangeNPCSelection = (event) => {
@@ -331,7 +321,7 @@ class Battle extends React.Component {
       this.setState({
         escapeSuccess: true
       });
-      // TODO: popup saying escape succeeded
+      // TODO: toast saying escape succeeded
     } else {
       // TODO: log the action, maybe a popup saying escape failed, continue battle
       console.log("Escape unsuccessful!");
@@ -459,7 +449,7 @@ class Battle extends React.Component {
                     onClick={this.handleEscape}
                 >
                   {STRINGS.BATTLE_BUTTON_ESCAPE}
-                </Button>{' '}
+                </Button>
               </div>
               <div className="battle-log-container container">
                 <h3 className="battle-log-container-header-text">{STRINGS.BATTLE_LOG_CONTAINER_HEADER_MSG}</h3>
@@ -489,4 +479,4 @@ Battle.propTypes = {
   npcSelection: PropTypes.string
 };
 
-export default Battle;
+export default withRouter(Battle);
