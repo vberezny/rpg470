@@ -326,7 +326,7 @@ class Battle extends React.Component {
     } else {
       // TODO: log the action, maybe a popup saying escape failed, continue battle
       console.log("Escape unsuccessful!");
-      setTimeout(this.npcAttack, 2000);
+      setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
     }
   };
 
@@ -338,7 +338,7 @@ class Battle extends React.Component {
       damage = NUMBERS.BATTLE_DAMAGE_0;
     }
     this.calculateAndSetNewNPCHealth(damage);
-    setTimeout(this.npcAttack, 2000);
+    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL));
   };
 
   // TODO: will expand same as attack method
@@ -348,7 +348,7 @@ class Battle extends React.Component {
       damage = NUMBERS.BATTLE_DAMAGE_0;
     }
     this.calculateAndSetNewNPCHealth(damage);
-    setTimeout(this.npcAttack, 2000);
+    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   npcAttack = () => {
