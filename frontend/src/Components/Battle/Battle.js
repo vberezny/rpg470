@@ -295,7 +295,7 @@ class Battle extends React.Component {
       this.setState({
         allNPCs
       });
-      if (this.props.location) {
+      if (this.props.location.state) {
         const isNPCSelected = this.props.location.state.isNPCSelected;
         const npcSelection = this.props.location.state.npcSelection;
         // skips npc selection modal if npc is already selected from home page
