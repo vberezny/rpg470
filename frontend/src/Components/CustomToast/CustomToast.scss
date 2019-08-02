@@ -1,0 +1,33 @@
+.custom-toast {
+  position: fixed;
+  z-index: 5;
+  top: 5%;
+  margin: auto;
+  left: 0;
+  right: 0;
+
+  .custom-toast-clear-button {
+    padding: 0;
+    float: right;
+    position: relative;
+    bottom: 35px;
+    right: 10px;
+  }
+
+  .custom-toast-clear-button-icon {
+    position: relative;
+    bottom: 1px;
+  }
+
+  .success-toast-header-text {
+    font-size: 22px;
+  }
+
+  .success-toast-body-text {
+    font-size: 18px;
+  }
+
+  .success-toast-text {
+    color: #ffffff;
+  }
+}
