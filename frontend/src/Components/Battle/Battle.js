@@ -257,12 +257,13 @@ class Battle extends React.Component {
   };
 
   async componentDidMount() {
+    // const isNPCSelected = this.props.location.state.isNPCSelected;
+    // const npcSelection = this.props.location.state.npcSelection;
+    // console.log("npc: ", npcSelection, " isSel: ", isNPCSelected);
     const responseCharacters = await fetch(GLOBAL_URLS.GET_API_CHARACTERS);
     const responseNPCs = await fetch(GLOBAL_URLS.GET_API_NPCS);
     const bodyCharacters = await responseCharacters.json();
     const bodyNPCs = await responseNPCs.json();
-    console.log('Found characters:', bodyCharacters);
-    console.log('Found npcs:', bodyNPCs);
     if (bodyCharacters) {
       bodyCharacters[GLOBAL_STRINGS.CHARACTER_API_RESPONSE_INDEX].forEach(character => {
         if (character.name === this.props.currentCharacterName) {
@@ -278,8 +279,26 @@ class Battle extends React.Component {
       this.setState({
         allNPCs
       });
+      // if (isNPCSelected) {
+      //   this.setState({
+      //     isNPCSelected: true,
+      //     npcSelection
+      //   });
+      //   allNPCs.forEach(npc => {
+      //     if (npc.name === this.state.npcSelection) {
+      //       npc.currentHealth = npc.health;
+      //       this.setState({
+      //         npc
+      //       });
+      //     }
+      //   });
+      // }
     }
     // TODO: if user selected specific npc to battle on home screen set npc and skip selection modal
+  }
+
+  componentWillReceiveProps() {
+
   }
 
   handleChangeNPCSelection = (event) => {
@@ -464,7 +483,10 @@ class Battle extends React.Component {
 
 Battle.propTypes = {
   handleUnauthenticate: PropTypes.func,
-  currentCharacterName: PropTypes.string
+  currentCharacterName: PropTypes.string,
+  location: PropTypes.object,
+  isNPCSelected: PropTypes.bool,
+  npcSelection: PropTypes.string
 };
 
 export default Battle;

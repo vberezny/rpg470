@@ -68,6 +68,12 @@
 
   .showcase-container {
     margin-bottom: 20px;
+
+    .battle-npcs {
+      .battle-npc-card {
+        min-width: 20%;
+      }
+    }
   }
 
   .explore-map-cardimg {
