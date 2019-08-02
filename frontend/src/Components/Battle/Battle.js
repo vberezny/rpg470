@@ -10,7 +10,8 @@ import {
   Table,
   CardBody,
   CardTitle,
-  CardSubtitle, Input,
+  CardSubtitle,
+  Input,
 } from 'reactstrap';
 import {
   STRINGS,
@@ -278,6 +279,7 @@ class Battle extends React.Component {
         allNPCs
       });
     }
+    // TODO: if user selected specific npc to battle on home screen set npc and skip selection modal
   }
 
   handleChangeNPCSelection = (event) => {
@@ -313,7 +315,6 @@ class Battle extends React.Component {
       // TODO: popup saying escape succeeded
     } else {
       // TODO: log the action, maybe a popup saying escape failed, continue battle
-      // TODO: popup saying escape succeeded
       console.log("Escape unsuccessful!");
       this.npcAttack();
     }
