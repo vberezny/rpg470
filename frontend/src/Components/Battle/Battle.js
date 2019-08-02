@@ -23,7 +23,7 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
 import Goblin from "../../Assets/goblin.png";
-import {Redirect, withRouter} from "react-router-dom";
+import {withRouter, Link} from "react-router-dom";
 import CustomSelectionModal from "../CustomSelectionModal/CustomSelectionModal";
 
 function CharacterCard(props) {
@@ -227,18 +227,7 @@ SelectNPCModal.propTypes = {
   handleConfirmNPCSelection: PropTypes.func
 };
 
-// function EscapeSuccessful(props) {
-//   const success = props.EscapeSuccessful;
-//   if (success) {
-//     return <Redirect to="/"/>;
-//   }
-//   return null;
-// }
-//
-// EscapeSuccessful.propTypes = {
-//   EscapeSuccessful: PropTypes.bool
-// };
-
+// TODO: add displays for xp gain, and a button to assign new stats if the character levels up
 function BattleResultsModal(props) {
   const className = "battle-results-modal";
   let headerMessage;
@@ -257,10 +246,9 @@ function BattleResultsModal(props) {
       <ModalHeader>{headerMessage}</ModalHeader>
       <ModalBody>{bodyMessage}</ModalBody>
       <ModalFooter>
-        {/*TODO: onclick reload the battle page with the npc selection modal popping up*/}
-        <Button color="primary">Another Battle</Button>
-        {/*TODO: onclick redirect to home*/}
-        <Button color="secondary">Home</Button>
+        <Link to="/">
+          <Button color="primary">{STRINGS.BATTLE_RESULT_MODAL_FOOTER_HOME_BTN}</Button>
+        </Link>
       </ModalFooter>
     </Modal>
   );
@@ -447,7 +435,6 @@ class Battle extends React.Component {
             escapeSuccess={this.state.escapeSuccess}
             npcName={this.state.npc.name}
         />
-        {/*<EscapeSuccessful EscapeSuccessful={this.state.escapeSuccess} />*/}
         <CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
          {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="battle-centered-content full-viewport-with-navbar centered content container">

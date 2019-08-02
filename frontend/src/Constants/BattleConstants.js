@@ -21,7 +21,8 @@ const STRINGS = {
   BATTLE_RESULT_MODAL_HEADER_ESCAPE_MSG: 'You successfully escaped from the ',
   BATTLE_RESULT_MODAL_HEADER_LOSS_MSG: 'You were defeated by the ',
   BATTLE_RESULT_MODAL_HEADER_WIN_MSG: 'You defeated the ',
-  BATTLE_RESULT_MODAL_BODY_MSG: 'Select one of the options below to continue your adventure'
+  BATTLE_RESULT_MODAL_BODY_MSG: 'Click below to continue your adventure',
+  BATTLE_RESULT_MODAL_FOOTER_HOME_BTN: 'Take me Home'
 };
 
 const NUMBERS = {
