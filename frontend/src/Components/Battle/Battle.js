@@ -412,9 +412,9 @@ class Battle extends React.Component {
     if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
       damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
-    const message = STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_1 +
-        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_2 +
-        damage + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_3;
+    const message = STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_1 +
+        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_2 +
+        damage + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_3;
     const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
     // logs regular attack info
     this.handlePrependToBattleLog(message, color);
@@ -427,9 +427,9 @@ class Battle extends React.Component {
     if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
       damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
-    const message = STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_1 +
-        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_2 +
-        damage + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_3;
+    const message = STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_1 +
+        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_2 +
+        damage + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_3;
     const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
     // logs magic attack info
     this.handlePrependToBattleLog(message, color);
@@ -439,21 +439,21 @@ class Battle extends React.Component {
   npcAttack = () => {
     const attackType = Math.round(Math.random()); // generates 0 or 1
     let damage;
-    let message = STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_1 + this.state.npc.name;
+    let message = STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_1 + this.state.npc.name;
     if (attackType === NUMBERS.BATTLE_ATTACK_TYPE_ZERO) {   // Normal attack
       damage = this.state.npc.attack - this.state.character.defense;
       if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
         damage = NUMBERS.BATTLE_DAMAGE_ZERO;
       }
-      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_2 +
-          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_3;
+      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_2 +
+          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_3;
     } else {                                                // Magic attack
       damage = this.state.npc.magic_attack - this.state.character.magic_defense;
       if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
         damage = NUMBERS.BATTLE_DAMAGE_ZERO;
       }
-      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_2 +
-          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_3;
+      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_PT_2 +
+          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_PT_3;
     }
     const color = STRINGS.BATTLE_LOG_COLOR_DANGER;
     // logs npc attack type and damage
