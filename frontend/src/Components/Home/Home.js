@@ -17,6 +17,7 @@ import {
 import {Link} from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import CustomSelectionModal from '../CustomSelectionModal/CustomSelectionModal';
+import CustomToast from '../CustomToast/CustomToast';
 import {
   STRINGS
 } from '../../Constants/HomeConstants';
@@ -32,29 +33,6 @@ import Imp from '../../Assets/imp.png';
 import GrassMap from '../../Assets/grass_map.png';
 import BluePotion from '../../Assets/blue_potion.png';
 import {ReactComponent as Clear} from '../../Assets/CloseIcon24px.svg';
-
-// TODO: If possible, figure out how to fade out the toast message
-function NewCharacterToast(props) {
-  return (
-    <Toast isOpen={props.isOpen} className="mini-char-overview-new-character-toast bg-success">
-      <div className="mini-char-overview-new-character-toast-header">
-        <ToastHeader className="mini-char-overview-new-character-toast-header-text success-toast-text success-toast-header-text bg-success">
-          {STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_HEADER_MSG}
-        </ToastHeader>
-        <Button onClick={props.handleClose} className="mini-char-overview-new-character-toast-clear-button">
-          <Clear className="mini-char-overview-new-character-toast-clear-button-icon"/>
-        </Button>
-      </div>
-      <ToastBody className="mini-char-overview-new-character-toast-body success-toast-text success-toast-body-text">
-        {STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_BODY_MSG}
-      </ToastBody>
-    </Toast>
-  );
-}
-
-NewCharacterToast.propTypes = {
-  showCharacterNewlyCreatedToast: PropTypes.bool
-};
 
 function SelectCharacterModal(props) {
   let characters;
@@ -177,9 +155,12 @@ class Home extends React.Component {
       <div className="mini-char-overview showcase-container container">
         <div className="mini-char-overview-header-wrapper">
           <h2 className="mini-char-overview-header">{miniCharOverviewHeader}</h2>
-          <NewCharacterToast
+          <CustomToast
+            isSuccess
             isOpen={this.props.showCharacterNewlyCreatedToast}
             handleClose={this.props.handleCloseCharacterNewlyCreatedToast}
+            toastHeader={STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_HEADER_MSG}
+            toastBody={STRINGS.HOME_MINI_CHAR_OVERVIEW_NEW_CHAR_TOAST_BODY_MSG}
           />
         </div>
         <div className="mini-char-overview-content">

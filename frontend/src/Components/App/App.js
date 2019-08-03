@@ -56,6 +56,7 @@ class App extends React.Component {
     });
   };
 
+  // TODO: Refactor such that we don't have one state entry for each specific toast
   handleCloseCharacterNewlyCreatedToast = () => {
     this.setState({
       showCharacterNewlyCreatedToast: false
