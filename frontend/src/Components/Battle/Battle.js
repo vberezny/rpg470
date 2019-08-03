@@ -141,6 +141,7 @@ NpcCard.propTypes = {
   npc: PropTypes.object
 };
 
+<<<<<<< HEAD
 function SelectNPCModal(props) {
   let npcs;
   if (props.npcs.length > NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
@@ -258,6 +259,26 @@ BattleResultsModal.propTypes = {
   npcName: PropTypes.string
 };
 
+function BattleLog(props) {
+  const className = "battle-log";
+  const listItems = props.battleLog.reverse().map((listItem, index) => {
+    return (
+      <ListGroupItem key={index}>
+        {listItem}
+      </ListGroupItem>
+    )
+  });
+
+  return (
+    <ListGroup className={className}>
+      {listItems}
+    </ListGroup>
+  );
+}
+
+BattleLog.propTypes = {
+  battleLog: PropTypes.array,
+};
 
 class Battle extends React.Component {
   constructor(props) {
@@ -269,7 +290,8 @@ class Battle extends React.Component {
       winner: '',
       allNPCs: [],
       character: {},
-      npc: {}
+      npc: {},
+      battleLog: []
     }
   };
 
@@ -429,6 +451,12 @@ class Battle extends React.Component {
   };
 
   render() {
+    const mockBattleLog = [
+      "npc hits you for 5 damage",
+      "you hit npc for 4 damage",
+      "npc hits you for 999 damage"
+    ];
+
     return (
       <div className="battle-page page-container">
         <BattleResultsModal
@@ -481,15 +509,16 @@ class Battle extends React.Component {
               </div>
               <div className="battle-log-container container">
                 <h3 className="battle-log-container-header-text">{STRINGS.BATTLE_LOG_CONTAINER_HEADER_MSG}</h3>
-                <ListGroup className="battle-log">
-                  {/*TODO: build a battle log, below is temporary just for mockup purposes*/}
-                  <ListGroupItem>List ordered such that most recent actions go on top</ListGroupItem>
-                  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>
-                  <ListGroupItem>You hit goblin for 5 damage</ListGroupItem>
-                  <ListGroupItem>Goblin attacks you but misses!</ListGroupItem>
-                  <ListGroupItem>You cast fireball at the Goblin for 3 damage</ListGroupItem>
-                  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>
-                </ListGroup>
+                <BattleLog battleLog={/*this.state.battleLog*/mockBattleLog} />
+                {/*<ListGroup className="battle-log">*/}
+                {/*  /!*TODO: build a battle log, below is temporary just for mockup purposes*!/*/}
+                {/*  <ListGroupItem>List ordered such that most recent actions go on top</ListGroupItem>*/}
+                {/*  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>*/}
+                {/*  <ListGroupItem>You hit goblin for 5 damage</ListGroupItem>*/}
+                {/*  <ListGroupItem>Goblin attacks you but misses!</ListGroupItem>*/}
+                {/*  <ListGroupItem>You cast fireball at the Goblin for 3 damage</ListGroupItem>*/}
+                {/*  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>*/}
+                {/*</ListGroup>*/}
               </div>
             </div>
           </div>
