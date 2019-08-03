@@ -143,7 +143,7 @@ NpcCard.propTypes = {
 
 function SelectNPCModal(props) {
   let npcs;
-  if (props.npcs.length > 0) {
+  if (props.npcs.length > NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
     npcs = props.npcs.map((npc, index) => {
       const npcLevel = npc.level ? npc.level.toString() : null;
       return (
@@ -239,12 +239,10 @@ function BattleResultsModal(props) {
     headerMessage = STRINGS.BATTLE_RESULT_MODAL_HEADER_WIN_MSG + props.npcName;
   }
 
-  const bodyMessage = STRINGS.BATTLE_RESULT_MODAL_BODY_MSG;
-
   return (
     <Modal isOpen={props.winner || props.escapeSuccess} className={className}>
       <ModalHeader>{headerMessage}</ModalHeader>
-      <ModalBody>{bodyMessage}</ModalBody>
+      <ModalBody>{STRINGS.BATTLE_RESULT_MODAL_BODY_MSG}</ModalBody>
       <ModalFooter>
         <Link to="/">
           <Button color="primary">{STRINGS.BATTLE_RESULT_MODAL_FOOTER_HOME_BTN}</Button>
@@ -350,6 +348,7 @@ class Battle extends React.Component {
     } else {
       // TODO: log the action, continue battle
       console.log("You attempted to escape but were unsuccessful");
+      // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
       setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
     }
   };
@@ -358,41 +357,43 @@ class Battle extends React.Component {
   //  critical hits (this is just the basic method for now)
   handleAttack = () => {
     let damage = this.state.character.attack - this.state.npc.defense;
-    if (damage < NUMBERS.BATTLE_DAMAGE_0) {
-      damage = NUMBERS.BATTLE_DAMAGE_0;
+    if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
+      damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
     this.calculateAndSetNewNPCHealth(damage);
+    // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
     setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   // TODO: will expand same as attack method
   handleMagicAttack = () => {
     let damage = this.state.character.magic_attack - this.state.npc.magic_defense;
-    if (damage < NUMBERS.BATTLE_DAMAGE_0) {
-      damage = NUMBERS.BATTLE_DAMAGE_0;
+    if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
+      damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
     this.calculateAndSetNewNPCHealth(damage);
+    // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
     setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   npcAttack = () => {
     const attackType = Math.round(Math.random()); // generates 0 or 1
     let damage;
-    if (attackType === NUMBERS.BATTLE_ATTACK_TYPE_0) {   // Normal attack
+    if (attackType === NUMBERS.BATTLE_ATTACK_TYPE_ZERO) {   // Normal attack
       damage = this.state.npc.attack - this.state.character.defense;
     } else {                  // Magic attack
       damage = this.state.npc.magic_attack - this.state.character.magic_defense;
     }
-    if (damage < NUMBERS.BATTLE_DAMAGE_0) {
-      damage = NUMBERS.BATTLE_DAMAGE_0;
+    if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
+      damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
     this.calculateAndSetNewCharacterHealth(damage);
   };
 
   calculateAndSetNewNPCHealth = (damage) => {
     let newNPCHealth = this.state.npc.currentHealth - damage;
-    if (newNPCHealth < 0) {
-      newNPCHealth = 0;
+    if (newNPCHealth < NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
+      newNPCHealth = NUMBERS.BATTLE_GENERIC_ZERO_VALUE;
     }
     this.setState(prevState => ({
       npc: {
@@ -400,7 +401,7 @@ class Battle extends React.Component {
         currentHealth: newNPCHealth
       }
     }));
-    if (newNPCHealth === 0) {
+    if (newNPCHealth === NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
       this.setState(prevState => ({
         winner: prevState.character.name
       }));
@@ -410,8 +411,8 @@ class Battle extends React.Component {
 
   calculateAndSetNewCharacterHealth = (damage) => {
     let newCharacterHealth = this.state.character.currentHealth - damage;
-    if (newCharacterHealth < 0) {
-      newCharacterHealth = 0;
+    if (newCharacterHealth < NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
+      newCharacterHealth = NUMBERS.BATTLE_GENERIC_ZERO_VALUE;
     }
     this.setState(prevState => ({
       character: {
@@ -419,7 +420,7 @@ class Battle extends React.Component {
         currentHealth: newCharacterHealth
       }
     }));
-    if (newCharacterHealth === 0) {
+    if (newCharacterHealth === NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
       this.setState(prevState => ({
         winner: prevState.npc.name
       }));
