@@ -291,7 +291,6 @@ class Battle extends React.Component {
       allNPCs: [],
       character: {},
       npc: {},
-      // TODO: use push to populate this array with battle events
       battleLog: []
     }
   };
@@ -361,6 +360,7 @@ class Battle extends React.Component {
     });
   };
 
+  // TODO: call this whenever something needs to be logged
   handlePushToBattleLog = (message) => {
     let battleLog = this.state.battleLog;
     battleLog.push(message);
