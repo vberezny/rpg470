@@ -141,7 +141,6 @@ NpcCard.propTypes = {
   npc: PropTypes.object
 };
 
-<<<<<<< HEAD
 function SelectNPCModal(props) {
   let npcs;
   if (props.npcs.length > NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
