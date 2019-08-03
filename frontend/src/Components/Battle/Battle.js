@@ -361,6 +361,14 @@ class Battle extends React.Component {
     });
   };
 
+  handlePushToBattleLog = (message) => {
+    let battleLog = this.state.battleLog;
+    battleLog.push(message);
+    this.setState({
+      battleLog
+    })
+  };
+
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
     if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {
@@ -455,7 +463,8 @@ class Battle extends React.Component {
     const mockBattleLog = [
       "npc hits you for 5 damage",
       "you hit npc for 4 damage",
-      "npc hits you for 999 damage"
+      "npc hits you for 999 damage",
+      "you hit the npc for -8 damage"
     ];
 
     return (
