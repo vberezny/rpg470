@@ -19,10 +19,30 @@ const STRINGS = {
   BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG: 'Battle',
   BATTLE_SELECT_NPC_MODAL_NO_NPCS_MSG: 'NPCs unavailable',
   BATTLE_RESULT_MODAL_HEADER_ESCAPE_MSG: 'You successfully escaped from the ',
-  BATTLE_RESULT_MODAL_HEADER_LOSS_MSG: 'You were defeated by the ',
-  BATTLE_RESULT_MODAL_HEADER_WIN_MSG: 'You defeated the ',
+  BATTLE_RESULT_MODAL_HEADER_LOSS_MSG: 'You have been defeated by the ',
+  BATTLE_RESULT_MODAL_HEADER_WIN_MSG: 'You have defeated the ',
   BATTLE_RESULT_MODAL_BODY_MSG: 'Click below to continue your adventure',
-  BATTLE_RESULT_MODAL_FOOTER_HOME_BTN: 'Take me Home'
+  BATTLE_RESULT_MODAL_FOOTER_HOME_BTN: 'Take me Home',
+  BATTLE_LOG_MESSAGE_START: 'You are challenged to a battle by the ',
+  BATTLE_LOG_MESSAGE_ESCAPE_SUCCESS: 'You successfully escaped with your life',
+  BATTLE_LOG_MESSAGE_ESCAPE_FAIL: 'You attempted to escape but were unsuccessful',
+  BATTLE_LOG_MESSAGE_ATTACK_MSG_1: 'You hit the ',
+  BATTLE_LOG_MESSAGE_ATTACK_MSG_2: ' dealing ',
+  BATTLE_LOG_MESSAGE_ATTACK_MSG_3: ' damage',
+  BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_1: 'You cast a spell on the ',
+  BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_2: ' dealing ',
+  BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_3: ' magic damage',
+  BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_1: 'The ',
+  BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_2: ' hits you for ',
+  BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_3: ' damage',
+  BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_2: ' casts a spell on you dealing ',
+  BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_3: ' magic damage',
+  BATTLE_LOG_MESSAGE_VICTORY: 'You have defeated the ',
+  BATTLE_LOG_MESSAGE_DEFEAT: 'You have been defeated by the ',
+  BATTLE_LOG_COLOR_INFO: 'info',
+  BATTLE_LOG_COLOR_SUCCESS: 'success',
+  BATTLE_LOG_COLOR_WARNING: 'warning',
+  BATTLE_LOG_COLOR_DANGER: 'danger'
 };
 
 const NUMBERS = {
