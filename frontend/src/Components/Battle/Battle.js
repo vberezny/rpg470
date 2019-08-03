@@ -258,6 +258,26 @@ BattleResultsModal.propTypes = {
   npcName: PropTypes.string
 };
 
+function BattleLog(props) {
+  const className = "battle-log";
+  const listItems = props.battleLog.map((listItem, index) => {
+    return (
+      <ListGroupItem color={listItem.color} key={index}>
+        {listItem.message}
+      </ListGroupItem>
+    )
+  });
+
+  return (
+    <ListGroup className={className}>
+      {listItems}
+    </ListGroup>
+  );
+}
+
+BattleLog.propTypes = {
+  battleLog: PropTypes.array,
+};
 
 class Battle extends React.Component {
   constructor(props) {
@@ -269,7 +289,8 @@ class Battle extends React.Component {
       winner: '',
       allNPCs: [],
       character: {},
-      npc: {}
+      npc: {},
+      battleLog: []
     }
   };
 
@@ -304,6 +325,9 @@ class Battle extends React.Component {
           });
           allNPCs.forEach(npc => {
             if (npc.name === this.state.npcSelection) {
+              const message = STRINGS.BATTLE_LOG_MESSAGE_START + npc.name;
+              const color = STRINGS.BATTLE_LOG_COLOR_INFO;
+              this.handlePrependToBattleLog(message, color);
               npc.currentHealth = npc.health;
               this.setState({
                 npc
@@ -330,6 +354,9 @@ class Battle extends React.Component {
 
     this.state.allNPCs.forEach(npc => {
       if (npc.name === this.state.npcSelection) {
+        const message = STRINGS.BATTLE_LOG_MESSAGE_START + npc.name;
+        const color = STRINGS.BATTLE_LOG_COLOR_INFO;
+        this.handlePrependToBattleLog(message, color);
         npc.currentHealth = npc.health;
         this.setState({
           npc
@@ -338,17 +365,42 @@ class Battle extends React.Component {
     });
   };
 
+  handlePrependToBattleLog = (message, color) => {
+    const logEntry = {
+      message: message,
+      color: color
+    };
+    let battleLog = this.state.battleLog;
+    battleLog.unshift(logEntry);
+    this.setState({
+      battleLog
+    })
+  };
+
+
+  handleInventory = () => {
+    // TODO: hook up consumables once inventory endpoint is complete, use 'info' color for battle log and count item
+    //  use as 1 turn
+    console.log("Inventory not yet available");
+  };
+
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
     if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {
-      // TODO: log the action, save the battle
+      // TODO: save the battle
+      const message = STRINGS.BATTLE_LOG_MESSAGE_ESCAPE_SUCCESS;
+      const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+      // logs successful escape
+      this.handlePrependToBattleLog(message, color);
       this.setState({
         escapeSuccess: true
       });
     } else {
-      // TODO: log the action, continue battle
-      console.log("You attempted to escape but were unsuccessful");
-      // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
+      const message = STRINGS.BATTLE_LOG_MESSAGE_ESCAPE_FAIL;
+      const color = STRINGS.BATTLE_LOG_COLOR_WARNING;
+      // logs failed escape
+      this.handlePrependToBattleLog(message, color);
+      // failed escape counts as a turn, calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
       setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
     }
   };
@@ -360,9 +412,13 @@ class Battle extends React.Component {
     if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
       damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
+    const message = STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_1 +
+        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_2 +
+        damage + STRINGS.BATTLE_LOG_MESSAGE_ATTACK_MSG_PT_3;
+    const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+    // logs regular attack info
+    this.handlePrependToBattleLog(message, color);
     this.calculateAndSetNewNPCHealth(damage);
-    // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
-    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   // TODO: will expand same as attack method
@@ -371,22 +427,37 @@ class Battle extends React.Component {
     if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
       damage = NUMBERS.BATTLE_DAMAGE_ZERO;
     }
+    const message = STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_1 +
+        this.state.npc.name + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_2 +
+        damage + STRINGS.BATTLE_LOG_MESSAGE_MAGIC_ATTACK_MSG_PT_3;
+    const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+    // logs magic attack info
+    this.handlePrependToBattleLog(message, color);
     this.calculateAndSetNewNPCHealth(damage);
-    // calls this.npcAttack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
-    setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
   };
 
   npcAttack = () => {
     const attackType = Math.round(Math.random()); // generates 0 or 1
     let damage;
+    let message = STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_1 + this.state.npc.name;
     if (attackType === NUMBERS.BATTLE_ATTACK_TYPE_ZERO) {   // Normal attack
       damage = this.state.npc.attack - this.state.character.defense;
-    } else {                  // Magic attack
+      if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
+        damage = NUMBERS.BATTLE_DAMAGE_ZERO;
+      }
+      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_2 +
+          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_ATTACK_MSG_PT_3;
+    } else {                                                // Magic attack
       damage = this.state.npc.magic_attack - this.state.character.magic_defense;
+      if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
+        damage = NUMBERS.BATTLE_DAMAGE_ZERO;
+      }
+      message = message + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_PT_2 +
+          damage + STRINGS.BATTLE_LOG_MESSAGE_NPC_MAGIC_ATTACK_MSG_PT_3;
     }
-    if (damage < NUMBERS.BATTLE_DAMAGE_ZERO) {
-      damage = NUMBERS.BATTLE_DAMAGE_ZERO;
-    }
+    const color = STRINGS.BATTLE_LOG_COLOR_DANGER;
+    // logs npc attack type and damage
+    this.handlePrependToBattleLog(message, color);
     this.calculateAndSetNewCharacterHealth(damage);
   };
 
@@ -402,11 +473,18 @@ class Battle extends React.Component {
       }
     }));
     if (newNPCHealth === NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
+      const message = STRINGS.BATTLE_LOG_MESSAGE_VICTORY + this.state.npc.name;
+      const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+      // logs victory
+      this.handlePrependToBattleLog(message, color);
       this.setState(prevState => ({
         winner: prevState.character.name
       }));
+      // TODO: save the battle
+    } else {
+      // starts npc counter attack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
+      setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
     }
-    // TODO: create battle log component and log stuff in there
   };
 
   calculateAndSetNewCharacterHealth = (damage) => {
@@ -421,11 +499,15 @@ class Battle extends React.Component {
       }
     }));
     if (newCharacterHealth === NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
+      const message = STRINGS.BATTLE_LOG_MESSAGE_DEFEAT + this.state.npc.name;
+      const color = STRINGS.BATTLE_LOG_COLOR_DANGER;
+      // logs defeat
+      this.handlePrependToBattleLog(message, color);
       this.setState(prevState => ({
         winner: prevState.npc.name
       }));
+      // TODO: save the battle
     }
-    // TODO: create battle log component and log stuff in there
   };
 
   render() {
@@ -469,8 +551,13 @@ class Battle extends React.Component {
                 >
                   {STRINGS.BATTLE_BUTTON_MAGIC}
                 </Button>
-                {/*TODO: hookup character inventory (probably just consumables) once the endpoint is created*/}
-                <Button className="inventory-button battle-button" color="success">{STRINGS.BATTLE_BUTTON_INVENTORY}</Button>{' '}
+                <Button
+                    className="inventory-button battle-button"
+                    color="success"
+                    onClick={this.handleInventory}
+                >
+                  {STRINGS.BATTLE_BUTTON_INVENTORY}
+                </Button>
                 <Button
                     className="escape-button battle-button"
                     color="warning"
@@ -481,15 +568,7 @@ class Battle extends React.Component {
               </div>
               <div className="battle-log-container container">
                 <h3 className="battle-log-container-header-text">{STRINGS.BATTLE_LOG_CONTAINER_HEADER_MSG}</h3>
-                <ListGroup className="battle-log">
-                  {/*TODO: build a battle log, below is temporary just for mockup purposes*/}
-                  <ListGroupItem>List ordered such that most recent actions go on top</ListGroupItem>
-                  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>
-                  <ListGroupItem>You hit goblin for 5 damage</ListGroupItem>
-                  <ListGroupItem>Goblin attacks you but misses!</ListGroupItem>
-                  <ListGroupItem>You cast fireball at the Goblin for 3 damage</ListGroupItem>
-                  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>
-                </ListGroup>
+                <BattleLog battleLog={this.state.battleLog} />
               </div>
             </div>
           </div>
