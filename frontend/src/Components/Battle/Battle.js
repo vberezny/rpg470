@@ -377,6 +377,13 @@ class Battle extends React.Component {
     })
   };
 
+
+  handleInventory = () => {
+    // TODO: hook up consumables once inventory endpoint is complete, use 'info' color for battle log and count item
+    //  use as 1 turn
+    console.log("Inventory not yet available");
+  };
+
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
     if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {
@@ -544,8 +551,13 @@ class Battle extends React.Component {
                 >
                   {STRINGS.BATTLE_BUTTON_MAGIC}
                 </Button>
-                {/*TODO: hookup character inventory (probably just consumables) once the endpoint is created*/}
-                <Button className="inventory-button battle-button" color="success">{STRINGS.BATTLE_BUTTON_INVENTORY}</Button>{' '}
+                <Button
+                    className="inventory-button battle-button"
+                    color="success"
+                    onClick={this.handleInventory}
+                >
+                  {STRINGS.BATTLE_BUTTON_INVENTORY}
+                </Button>
                 <Button
                     className="escape-button battle-button"
                     color="warning"
