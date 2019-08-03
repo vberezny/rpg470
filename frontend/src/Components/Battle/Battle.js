@@ -291,6 +291,7 @@ class Battle extends React.Component {
       allNPCs: [],
       character: {},
       npc: {},
+      // TODO: use push to populate this array with battle events
       battleLog: []
     }
   };
