@@ -8,9 +8,7 @@ import (
 
 // Up is executed when this migration is applied
 func Up_20190803161329(txn *sql.Tx) {
-	_, err := txn.Exec(`ALTER TABLE characters 
-											ADD COLUMN Gold int not null DEFAULT 0,
-											ADD COLUMN Class text;`)
+	_, err := txn.Exec(`ALTER TABLE characters ADD COLUMN Gold int not null DEFAULT 0, ADD COLUMN Class text;`)
 
 	if err != nil {
 		log.Fatalf("fatal error while running add gold and class columns to character table migration %v", err)
