@@ -362,6 +362,7 @@ class Battle extends React.Component {
 
   // TODO: call this whenever something needs to be logged
   handlePushToBattleLog = (message) => {
+    // TODO: maybe make this an array of objects where each object has a color (for contextual classes) and a message
     let battleLog = this.state.battleLog;
     battleLog.push(message);
     this.setState({
@@ -520,15 +521,6 @@ class Battle extends React.Component {
               <div className="battle-log-container container">
                 <h3 className="battle-log-container-header-text">{STRINGS.BATTLE_LOG_CONTAINER_HEADER_MSG}</h3>
                 <BattleLog battleLog={/*this.state.battleLog*/mockBattleLog} />
-                {/*<ListGroup className="battle-log">*/}
-                {/*  /!*TODO: build a battle log, below is temporary just for mockup purposes*!/*/}
-                {/*  <ListGroupItem>List ordered such that most recent actions go on top</ListGroupItem>*/}
-                {/*  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>*/}
-                {/*  <ListGroupItem>You hit goblin for 5 damage</ListGroupItem>*/}
-                {/*  <ListGroupItem>Goblin attacks you but misses!</ListGroupItem>*/}
-                {/*  <ListGroupItem>You cast fireball at the Goblin for 3 damage</ListGroupItem>*/}
-                {/*  <ListGroupItem>Goblin hits you for 4 damage</ListGroupItem>*/}
-                {/*</ListGroup>*/}
               </div>
             </div>
           </div>
