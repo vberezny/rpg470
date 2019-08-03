@@ -66,3 +66,27 @@
     }
   }
 }
+
+.select-npc-modal {
+  top: 6%;
+
+  .select-npc-modal-card-container {
+    flex-wrap: wrap;
+  }
+
+  .select-npc-label-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 30px;
+
+    .form-check-input {
+      position: relative;
+      margin: 0;
+    }
+  }
+}
+
+.battle-results-modal {
+  top: 20%;
+}

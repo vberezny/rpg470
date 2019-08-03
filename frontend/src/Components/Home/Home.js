@@ -21,7 +21,8 @@ import {
   STRINGS
 } from '../../Constants/HomeConstants';
 import {
-  GLOBAL_URLS
+  GLOBAL_URLS,
+  GLOBAL_STRINGS
 } from '../../Constants/GlobalConstants';
 import './Home.scss';
 import PrincessAvatar from '../../Assets/princess_avatar.png';
@@ -121,6 +122,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       allCharacters: [],
+      allNPCs: [],
       character: {
         name: '',
         level: null,
@@ -135,10 +137,12 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const response = await fetch(GLOBAL_URLS.GET_API_CHARACTERS);
-    const body = await response.json();
-    if (body) {
-      const allCharacters = body[STRINGS.HOME_CHARACTER_API_RESPONSE_INDEX];
+    const responseCharacters = await fetch(GLOBAL_URLS.GET_API_CHARACTERS);
+    const responseNPCs = await fetch(GLOBAL_URLS.GET_API_NPCS);
+    const bodyCharacters = await responseCharacters.json();
+    const bodyNPCs = await responseNPCs.json();
+    if (bodyCharacters) {
+      const allCharacters = bodyCharacters[GLOBAL_STRINGS.CHARACTER_API_RESPONSE_INDEX];
       this.setState({
         allCharacters
       });
@@ -148,6 +152,12 @@ class Home extends React.Component {
             character
           });
         }
+      });
+    }
+    if (bodyNPCs) {
+      const allNPCs = bodyNPCs[GLOBAL_STRINGS.NPC_API_RESPONSE_INDEX];
+      this.setState({
+        allNPCs
       });
     }
   }
@@ -226,39 +236,27 @@ class Home extends React.Component {
   };
 
   renderBattleShowcase = () => {
-    // TODO: fetch NPCs to battle (near level) and map them to cards instead of using mock data
-    const mockNPCs = [
-      {
-        npcTitle: 'Goblin',
-        npcLevel: 1,
-        npcText: 'Some text about the goblin',
-        npcImgSrc: Goblin
-      },
-      {
-        npcTitle: 'Zombie',
-        npcLevel: 2,
-        npcText: 'Some text about the zombie',
-        npcImgSrc: Zombie
-      },
-      {
-        npcTitle: 'Imp',
-        npcLevel: 3,
-        npcText: 'Some text about the imp',
-        npcImgSrc: Imp
-      }
-    ];
-
-    const npcCards = mockNPCs.map((npcData, index) => {
+    const npcCards = this.state.allNPCs.map((npcData, index) => {
+      const npcLevel = npcData.level ? npcData.level.toString() : null;
       return (
         <Card key={index} className="battle-npc-card">
-          <CardImg className="battle-npc-cardimg cardimg" src={npcData.npcImgSrc}/>
+           {/*TODO: figure out correct avatars*/}
+          <CardImg className="battle-npc-cardimg cardimg" src={Imp}/>
           <CardBody className="battle-npc-cardbody cardbody">
             <div className="battle-npc-cardtitle-wrapper cardtitle-wrapper">
-              <CardTitle className="battle-npc-cardtitle cardtitle cardtext-color">{npcData.npcTitle}</CardTitle>
-              <CardSubtitle className="battle-npc-cardsubtitle cardsubtitle">{STRINGS.HOME_LEVEL_MSG + npcData.npcLevel.toString()}</CardSubtitle>
+              <CardTitle className="battle-npc-cardtitle cardtitle cardtext-color">{npcData.name}</CardTitle>
+              <CardSubtitle className="battle-npc-cardsubtitle cardsubtitle">{STRINGS.HOME_LEVEL_MSG + npcLevel}</CardSubtitle>
             </div>
-            <CardText className="battle-npc-cardtext cardtext cardtext-color">{npcData.npcText}</CardText>
-            <Button color="primary" className="battle-npc-button cardbutton">{STRINGS.HOME_BATTLE_SHOWCASE_CARD_BUTTON_MSG}</Button>
+            <CardText className="battle-npc-cardtext cardtext cardtext-color">{npcData.description}</CardText>
+            <Link to={{
+              pathname: '/battle',
+              state: {
+                isNPCSelected: true,
+                npcSelection: npcData.name
+              }
+            }}>
+              <Button color="primary" className="battle-npc-button cardbutton">{STRINGS.HOME_BATTLE_SHOWCASE_CARD_BUTTON_MSG}</Button>
+            </Link>
           </CardBody>
         </Card>
       );
@@ -400,7 +398,7 @@ Home.propTypes = {
   currentCharacterName: PropTypes.string,
   handleCloseCharacterNewlyCreatedToast: PropTypes.func,
   handleConfirmCharacterSelection: PropTypes.func,
-  handleUnauthenticate: PropTypes.func
+  handleUnauthenticate: PropTypes.func,
 };
 
 export default Home;
