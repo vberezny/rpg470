@@ -86,6 +86,13 @@ type NPCs struct {
 	NPCs []NPC `json:"npcs"`
 }
 
+type Battle struct {
+	CharacterId int    `json:"id"`
+	Won         bool   `json:"won"`
+	Opponent    string `json:"opponent"`
+	BattleLog   []string `json:"log"`
+}
+
 func (c *Character) CalculateStats() {
 	c.Health = c.Stamina * 2
 	c.Attack = int(math.Round(float64(c.Strength) / 3))
