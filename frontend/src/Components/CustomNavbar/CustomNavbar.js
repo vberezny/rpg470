@@ -40,7 +40,7 @@ function CustomNavbar(props) {
               </NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
+              <DropdownToggle nav caret disabled className="disabled">
                 {STRINGS.NAVBAR_NAV_EXPLORE_MSG}
               </DropdownToggle>
               <DropdownMenu right>
