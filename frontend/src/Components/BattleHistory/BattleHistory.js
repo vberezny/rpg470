@@ -18,7 +18,6 @@ function HistoryTable(props) {
 				</tr>
 			);
 		});
-
 		// return the table
 		return (
 			<Table
