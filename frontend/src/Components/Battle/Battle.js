@@ -290,7 +290,8 @@ class Battle extends React.Component {
       allNPCs: [],
       character: {},
       npc: {},
-      battleLog: []
+      battleLog: [],
+      saveLog: []
     }
   };
 
@@ -372,9 +373,32 @@ class Battle extends React.Component {
     };
     let battleLog = this.state.battleLog;
     battleLog.unshift(logEntry);
+    let saveLog = this.state.saveLog;
+    saveLog.push(message);
     this.setState({
-      battleLog
+      battleLog,
+      saveLog
     })
+  };
+
+  handleSaveBattle = async () => {
+    const won = this.state.winner === this.state.character.name;
+    const response = await fetch(`${GLOBAL_URLS.POST_API_SAVE_BATTLE}`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        id: this.state.character.id,
+        won: won,
+        escaped: this.state.escapeSuccess,
+        opponent: this.state.npc.name,
+        log: this.state.saveLog
+      })
+    });
+    const body = await response.json();
+    console.log(body);
   };
 
 
@@ -387,14 +411,14 @@ class Battle extends React.Component {
   handleEscape = () => {
     const success = Math.round(Math.random()); // generates 0 or 1
     if (success === NUMBERS.BATTLE_ESCAPE_SUCCESS_1) {
-      // TODO: save the battle
       const message = STRINGS.BATTLE_LOG_MESSAGE_ESCAPE_SUCCESS;
       const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
       // logs successful escape
       this.handlePrependToBattleLog(message, color);
+      // waits for setState to complete before saving battle
       this.setState({
         escapeSuccess: true
-      });
+      }, this.handleSaveBattle);
     } else {
       const message = STRINGS.BATTLE_LOG_MESSAGE_ESCAPE_FAIL;
       const color = STRINGS.BATTLE_LOG_COLOR_WARNING;
@@ -477,10 +501,10 @@ class Battle extends React.Component {
       const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
       // logs victory
       this.handlePrependToBattleLog(message, color);
+      // waits for setState to complete before saving battle
       this.setState(prevState => ({
         winner: prevState.character.name
-      }));
-      // TODO: save the battle
+      }), this.handleSaveBattle);
     } else {
       // starts npc counter attack after BATTLE_NPC_ATTACK_TIMEOUT_VAL milliseconds
       setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
@@ -503,10 +527,10 @@ class Battle extends React.Component {
       const color = STRINGS.BATTLE_LOG_COLOR_DANGER;
       // logs defeat
       this.handlePrependToBattleLog(message, color);
+      // waits for setState to complete before saving battle
       this.setState(prevState => ({
         winner: prevState.npc.name
-      }));
-      // TODO: save the battle
+      }), this.handleSaveBattle);
     }
   };
 

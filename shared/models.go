@@ -89,6 +89,7 @@ type NPCs struct {
 type Battle struct {
 	CharacterId int      `json:"id"`
 	Won         bool     `json:"won"`
+	Escaped     bool     `json:"escaped"`
 	Opponent    string   `json:"opponent"`
 	Log         []string `json:"log"`
 }

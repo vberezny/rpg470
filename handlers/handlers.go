@@ -493,10 +493,10 @@ func HandleSaveBattle(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: figure out validation for battle data (or if it is even needed)
 
-	sqlStatement := `INSERT INTO Battles (characterid, won, opponent, log, battletime)
-			VALUES ($1, $2, $3, $4, $5)`
-	_, err = Database.Exec(sqlStatement, battle.CharacterId, battle.Won, battle.Opponent, pq.Array(battle.Log),
-		time.Now())
+	sqlStatement := `INSERT INTO Battles (characterid, won, escaped, opponent, log, battletime)
+			VALUES ($1, $2, $3, $4, $5, $6)`
+	_, err = Database.Exec(sqlStatement, battle.CharacterId, battle.Won, battle.Escaped, battle.Opponent,
+		pq.Array(battle.Log), time.Now())
 	if err != nil {
 		strErr := fmt.Sprintf("Could not insert into database error: %v", err)
 		helpers.LogAndSendErrorMessage(w, strErr, http.StatusBadRequest)
