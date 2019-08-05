@@ -119,6 +119,13 @@ class App extends React.Component {
             currentCharacterName={this.state.currentCharacterName}
           />)}
         />
+        <Route
+          path="/battle/history"
+          component={() => this.handleRenderProtectedPage(<BattleHistory
+            handleUnauthenticate={this.handleUnauthenticate}
+            currentCharacterName={this.state.currentCharacterName}
+          />)}
+        />
       </Router>
     );
   }
