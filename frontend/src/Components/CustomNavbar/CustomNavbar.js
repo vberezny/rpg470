@@ -34,16 +34,18 @@ function CustomNavbar(props) {
                 {STRINGS.NAVBAR_NAV_BATTLE_MSG}
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/#/shop">
+                {STRINGS.NAVBAR_NAV_SHOP_MSG}
+              </NavLink>
+            </NavItem>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret disabled className="disabled">
+              <DropdownToggle nav caret>
                 {STRINGS.NAVBAR_NAV_EXPLORE_MSG}
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_MAP_MSG}
-                </DropdownItem>
-                <DropdownItem disabled>
-                  {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_SHOP_MSG}
                 </DropdownItem>
                 <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_QUESTS_MSG}
