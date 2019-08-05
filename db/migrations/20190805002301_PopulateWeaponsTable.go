@@ -14,35 +14,35 @@ type Weapon struct {
 	MagicDamage int
 }
 
-var weapon1 = Weapon {
-	Name: "Sword",
-	Damage: 3,
-	Speed: 10,
-	CritChance: 10,
+var weapon1 = Weapon{
+	Name:        "Sword",
+	Damage:      3,
+	Speed:       10,
+	CritChance:  10,
 	MagicDamage: 0,
 }
 
-var weapon2 = Weapon {
-	Name: "Spear",
-	Damage: 4,
-	Speed: 9,
-	CritChance: 15,
+var weapon2 = Weapon{
+	Name:        "Spear",
+	Damage:      4,
+	Speed:       9,
+	CritChance:  15,
 	MagicDamage: 0,
 }
 
-var weapon3 = Weapon {
-	Name: "War Axe",
-	Damage: 6,
-	Speed: 4,
-	CritChance: 10,
+var weapon3 = Weapon{
+	Name:        "War Axe",
+	Damage:      6,
+	Speed:       4,
+	CritChance:  10,
 	MagicDamage: 0,
 }
 
-var weapon4 = Weapon {
-	Name: "Staff",
-	Damage: 0,
-	Speed: 0,
-	CritChance: 10,
+var weapon4 = Weapon{
+	Name:        "Staff",
+	Damage:      0,
+	Speed:       0,
+	CritChance:  10,
 	MagicDamage: 5,
 }
 
