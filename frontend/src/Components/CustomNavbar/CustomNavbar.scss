@@ -13,6 +13,13 @@
 
   }
 
+  .battle-nav-link {
+    color: #000000;
+    &:hover {
+      color: #333331
+    }
+  }
+
   .disabled {
     color: #5a6268;
   }
