@@ -30,7 +30,8 @@ const GLOBAL_URLS = {
   GET_API_USERS_EXISTS: '/api/users/exists/',
   GET_API_USERS_LOGGED_IN: '/api/users/logged_in',
   GET_API_CHARACTERS: '/api/characters',
-  GET_API_NPCS: '/api/npcs'
+  GET_API_NPCS: '/api/npcs',
+  POST_API_SAVE_BATTLE: '/api/battle'
 };
 
 export {
