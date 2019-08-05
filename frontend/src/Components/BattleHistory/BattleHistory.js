@@ -77,7 +77,6 @@ class BattleHistory extends React.Component {
 				const responseHistory = await fetch(`${GLOBAL_URLS.GET_API_BATTLE_HISTORY}${this.state.characterId}`);
 				const bodyHistory = await responseHistory.json();
 				if (bodyHistory) {
-					console.log(bodyHistory);
 					let battleHistory = [];
 					bodyHistory[GLOBAL_STRINGS.BATTLE_HISTORY_API_RESPONSE_INDEX].forEach(entry => {
 						let date = new Date(entry.timestamp).toDateString();
@@ -108,7 +107,6 @@ class BattleHistory extends React.Component {
 
 	render() {
 		const headerMessage = STRINGS.BATTLE_HISTORY_HEADER_TEXT + this.props.currentCharacterName;
-
 		return (
 			<div className="battle-history-page page-container">
 				<CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
