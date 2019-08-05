@@ -29,11 +29,28 @@ function CustomNavbar(props) {
                 {STRINGS.NAVBAR_NAV_HOME_MSG}
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink href="/#/battle">
+            {/*TODO: make this into a dropdown with a link to both battle and battle history*/}
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
                 {STRINGS.NAVBAR_NAV_BATTLE_MSG}
-              </NavLink>
-            </NavItem>
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                  <NavItem>
+                    <NavLink href="/#/battle" className="battle-nav-link">
+                      {STRINGS.NAVBAR_NAV_BATTLE_NPC_MSG}
+                    </NavLink>
+                  </NavItem>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavItem>
+                    <NavLink href="/#/battles" className="battle-nav-link">
+                      {STRINGS.NAVBAR_NAV_BATTLE_HISTORY_MSG}
+                    </NavLink>
+                  </NavItem>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret disabled className="disabled">
                 {STRINGS.NAVBAR_NAV_EXPLORE_MSG}
