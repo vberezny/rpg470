@@ -44,7 +44,7 @@ function CustomNavbar(props) {
                 </DropdownItem>
                 <DropdownItem>
                   <NavItem>
-                    <NavLink href="/#/battles/history" className="battle-nav-link">
+                    <NavLink href="/#/battles" className="battle-nav-link">
                       {STRINGS.NAVBAR_NAV_BATTLE_HISTORY_MSG}
                     </NavLink>
                   </NavItem>
