@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 	"sfu.ca/apruner/cmpt470finalprojectrpg/helpers"
 	"sfu.ca/apruner/cmpt470finalprojectrpg/shared"
@@ -468,4 +469,47 @@ func HandleGetNPCs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 				log.Printf(helpers.WritingErrorFormatString, err)
 		}
+}
+
+func HandleSaveBattle(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
+	_, err := helpers.GetUsername(r)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, err.Error(), http.StatusUnauthorized)
+	}
+	if _, err := helpers.UserLoggedIn(r); err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("User not authenticated, please log in! error: %v", err), http.StatusForbidden)
+		return
+	}
+
+	battle := shared.Battle{}
+	decoder := json.NewDecoder(r.Body)
+	err = decoder.Decode(&battle)
+	if err != nil {
+		strErr := fmt.Sprintf("Could not process JSON body! Error: %v", err)
+		helpers.LogAndSendErrorMessage(w, strErr, http.StatusBadRequest)
+		return
+	}
+
+	// TODO: figure out validation for battle data (or if it is even needed)
+
+	sqlStatement := `INSERT INTO Battles (characterid, won, opponent, log, battletime)
+			VALUES ($1, $2, $3, $4, $5)`
+	_, err = Database.Exec(sqlStatement, battle.CharacterId, battle.Won, battle.Opponent, pq.Array(battle.Log),
+		time.Now())
+	if err != nil {
+		strErr := fmt.Sprintf("Could not insert into database error: %v", err)
+		helpers.LogAndSendErrorMessage(w, strErr, http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	encodedResponse, err := json.Marshal(battle)
+	if err != nil {
+		log.Printf(helpers.JsonEncodingErrorFormatString, err)
+	}
+	_, err = w.Write(encodedResponse)
+	if err != nil {
+		log.Printf(helpers.WritingErrorFormatString, err)
+	}
 }
