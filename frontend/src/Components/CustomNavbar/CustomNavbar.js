@@ -29,6 +29,7 @@ function CustomNavbar(props) {
                 {STRINGS.NAVBAR_NAV_HOME_MSG}
               </NavLink>
             </NavItem>
+            {/*TODO: make this into a dropdown with a link to both battle and battle history*/}
             <NavItem>
               <NavLink href="/#/battle">
                 {STRINGS.NAVBAR_NAV_BATTLE_MSG}

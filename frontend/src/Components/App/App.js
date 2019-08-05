@@ -121,7 +121,8 @@ class App extends React.Component {
           />)}
         />
         <Route
-          path="/battle/history"
+          {/*TODO: figure out if this is correct or if it should be /battle/history*/}
+          path="/battle-history"
           component={() => this.handleRenderProtectedPage(<BattleHistory
             handleUnauthenticate={this.handleUnauthenticate}
             currentCharacterName={this.state.currentCharacterName}
