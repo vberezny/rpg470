@@ -11,6 +11,17 @@
         margin-top: 25px;
         margin-bottom: 25px;
       }
+
+      .battle-history-table-container {
+        .battle-history-table {
+          background-color: #FFFFFF;
+        }
+
+        .history-table-no-history-message {
+          text-align: center;
+          font-size: 20px;
+        }
+      }
     }
   }
 }

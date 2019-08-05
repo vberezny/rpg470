@@ -1,5 +1,9 @@
 const STRINGS = {
-	BATTLE_HISTORY_HEADER_TEXT: 'Battle History for '
+	BATTLE_HISTORY_HEADER_TEXT: 'Battle History for ',
+	BATTLE_HISTORY_TABLE_HEADER_DATE: 'Date',
+	BATTLE_HISTORY_TABLE_HEADER_OPPONENT: 'Opponent',
+	BATTLE_HISTORY_TABLE_HEADER_OUTCOME: 'Outcome',
+	BATTLE_HISTORY_NO_HISTORY: 'This Character has no battle history'
 };
 
 export {
