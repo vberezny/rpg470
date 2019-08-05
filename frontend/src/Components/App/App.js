@@ -9,6 +9,7 @@ import Signup from '../Signup/Signup';
 import Home from '../Home/Home';
 import CreateCharacter from '../CreateCharacter/CreateCharacter';
 import Battle from '../Battle/Battle';
+import BattleHistory from '../BattleHistory/BattleHistory';
 
 class App extends React.Component {
   constructor(props) {
