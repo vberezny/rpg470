@@ -12,7 +12,7 @@ function HistoryTable(props) {
 		const tableRows = props.history.map((entry, index) => {
 			return (
 				<tr key={index}>
-					<td>{entry.time}</td>
+					<td>{entry.timestamp}</td>
 					<td>{entry.opponent}</td>
 					<td>{entry.outcome}</td>
 				</tr>
@@ -57,7 +57,8 @@ class BattleHistory extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			characterId: 0
+			characterId: 0,
+			battleHistory: []
 		}
 	};
 
@@ -72,35 +73,39 @@ class BattleHistory extends React.Component {
 					});
 				}
 			});
+			if (this.state.characterId !== 0) {
+				const responseHistory = await fetch(`${GLOBAL_URLS.GET_API_BATTLE_HISTORY}${this.state.characterId}`);
+				const bodyHistory = await responseHistory.json();
+				if (bodyHistory) {
+					console.log(bodyHistory);
+					let battleHistory = [];
+					bodyHistory[GLOBAL_STRINGS.BATTLE_HISTORY_API_RESPONSE_INDEX].forEach(entry => {
+						let date = new Date(entry.timestamp).toDateString();
+						let time = new Date(entry.timestamp).toLocaleTimeString();
+						let dateAndTime = date + ' ' + time;
+						let outcome;
+						if (entry.escaped) {
+							outcome = "Escaped"
+						} else if (entry.won) {
+							outcome = "Won"
+						} else {
+							outcome = "Lost"
+						}
+						battleHistory.push({
+							timestamp: dateAndTime,
+							opponent: entry.opponent,
+							outcome: outcome
+						});
+					});
+					this.setState({
+						battleHistory
+					});
+				}
+			}
 		}
-		// TODO: fetch battle history using character id (might have to put this as a callback after set state) (or
-		//  don't bother setting state since all I need is the id)
 	}
 
 	render() {
-		// TODO: make sure most recent battle is always on top
-		const mockTableData = [
-			{
-				time: 1,
-				opponent: "Imp",
-				outcome: "won"
-			},
-			{
-				time: 2,
-				opponent: "Imp",
-				outcome: "lost"
-			},
-			{
-				time: 3,
-				opponent: "Goblin",
-				outcome: "won"
-			},
-			{
-				time: 4,
-				opponent: "Zombie",
-				outcome: "escaped"
-			}
-		];
 		const headerMessage = STRINGS.BATTLE_HISTORY_HEADER_TEXT + this.props.currentCharacterName;
 
 		return (
@@ -110,7 +115,7 @@ class BattleHistory extends React.Component {
 					<div className="battle-history-viewport-width">
 						<h1 className="battle-history-header-text">{headerMessage}</h1>
 						<div className="battle-history-table-container container">
-							<HistoryTable history={mockTableData} />
+							<HistoryTable history={this.state.battleHistory} />
 						</div>
 					</div>
 				</div>
