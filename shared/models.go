@@ -86,7 +86,15 @@ type NPCs struct {
 	NPCs []NPC `json:"npcs"`
 }
 
-func (c *Character) CalculateStats() {
+type Battle struct {
+	CharacterId int      `json:"id"`
+	Won         bool     `json:"won"`
+	Escaped     bool     `json:"escaped"`
+	Opponent    string   `json:"opponent"`
+	Log         []string `json:"log"`
+}
+
+func (c *Character) CalculateStats()   {
 	c.Health = c.Stamina * 2
 	c.Attack = int(math.Round(float64(c.Strength) / 3))
 	c.Defense = int(math.Round(float64(c.Stamina+c.Agility) / 6))
