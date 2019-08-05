@@ -1,0 +1,16 @@
+.battle-history-page {
+  min-height: 100vh;
+
+  .battle-history-centered-content {
+
+    .battle-history-viewport-width {
+      min-width: 90%;
+
+      .battle-history-header-text {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+    }
+  }
+}

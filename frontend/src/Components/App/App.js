@@ -120,8 +120,8 @@ class App extends React.Component {
             currentCharacterName={this.state.currentCharacterName}
           />)}
         />
+	      {/*TODO: figure out if this is correct or if it should be /battle/history*/}
         <Route
-          {/*TODO: figure out if this is correct or if it should be /battle/history*/}
           path="/battle-history"
           component={() => this.handleRenderProtectedPage(<BattleHistory
             handleUnauthenticate={this.handleUnauthenticate}
