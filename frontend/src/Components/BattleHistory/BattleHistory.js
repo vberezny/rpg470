@@ -91,7 +91,8 @@ class BattleHistory extends React.Component {
 						} else {
 							outcome = "Lost"
 						}
-						battleHistory.push({
+						// unshift to make most recent battles appear first
+						battleHistory.unshift({
 							timestamp: dateAndTime,
 							opponent: entry.opponent,
 							outcome: outcome
