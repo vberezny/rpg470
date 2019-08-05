@@ -513,3 +513,56 @@ func HandleSaveBattle(w http.ResponseWriter, r *http.Request) {
 		log.Printf(helpers.WritingErrorFormatString, err)
 	}
 }
+
+func HandleCharacterBattles(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
+
+	_, err := helpers.GetUsername(r)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, err.Error(), http.StatusUnauthorized)
+	}
+	if _, err := helpers.UserLoggedIn(r); err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("User not authenticated, please log in! error: %v", err), http.StatusForbidden)
+		return
+	}
+
+	characterId := mux.Vars(r)["character_id"]
+	sqlStatement := `SELECT won, escaped, opponent, log, battletime FROM Battles WHERE characterid = $1`
+	rows, err := Database.Query(sqlStatement, characterId)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Println("error closing rows in HandleCharacterBattles: ", err)
+		}
+	}()
+
+	battles := shared.Battles{[]shared.Battle{}}
+
+	for rows.Next() {
+		battle := shared.Battle{}
+		err := rows.Scan(&battle.Won, &battle.Escaped, &battle.Opponent, pq.Array(&battle.Log), &battle.TimeStamp)
+		if err != nil {
+			msg := fmt.Sprintf("error scanning row, aborting. error: %v", err)
+			helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+			return
+		}
+		battles.Battles = append(battles.Battles, battle)
+	}
+
+	resp, err := json.Marshal(battles)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, "Could not marshal JSON body!", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = w.Write(resp)
+	if err != nil {
+		log.Printf(helpers.WritingErrorFormatString, err)
+	}
+
+}

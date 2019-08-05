@@ -80,26 +80,26 @@ class BattleHistory extends React.Component {
 	render() {
 		// TODO: make sure most recent battle is always on top
 		const mockTableData = [
-			// {
-			// 	time: 1,
-			// 	opponent: "Imp",
-			// 	outcome: "won"
-			// },
-			// {
-			// 	time: 2,
-			// 	opponent: "Imp",
-			// 	outcome: "lost"
-			// },
-			// {
-			// 	time: 3,
-			// 	opponent: "Goblin",
-			// 	outcome: "won"
-			// },
-			// {
-			// 	time: 4,
-			// 	opponent: "Zombie",
-			// 	outcome: "escaped"
-			// }
+			{
+				time: 1,
+				opponent: "Imp",
+				outcome: "won"
+			},
+			{
+				time: 2,
+				opponent: "Imp",
+				outcome: "lost"
+			},
+			{
+				time: 3,
+				opponent: "Goblin",
+				outcome: "won"
+			},
+			{
+				time: 4,
+				opponent: "Zombie",
+				outcome: "escaped"
+			}
 		];
 		const headerMessage = STRINGS.BATTLE_HISTORY_HEADER_TEXT + this.props.currentCharacterName;
 

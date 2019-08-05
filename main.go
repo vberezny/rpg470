@@ -104,6 +104,7 @@ func main() {
 	api.HandleFunc("/characters", handlers.HandleUserCharacters).Methods("GET")
 	api.HandleFunc("/npcs", handlers.HandleGetNPCs).Methods("GET")
 	api.HandleFunc("/battles", handlers.HandleSaveBattle).Methods("POST")
+	api.HandleFunc("/battles/{character_id}", handlers.HandleCharacterBattles).Methods("GET")
 
 	if os.Getenv("DISABLE_STATIC_FILE_SERVER") != "true" {
 		r.PathPrefix("").Handler(http.StripPrefix("", http.FileServer(http.Dir(STATIC))))
