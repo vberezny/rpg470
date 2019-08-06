@@ -220,7 +220,7 @@ class CreateCharacter extends React.Component {
 
   handleCreateCharacter = async (event) => {
     event.preventDefault();
-    const response = await fetch(`${GLOBAL_URLS.POST_API_CHARACTERS_CREATE}`, {
+    await fetch(`${GLOBAL_URLS.POST_API_CHARACTERS_CREATE}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -235,8 +235,6 @@ class CreateCharacter extends React.Component {
         charisma: this.state.stats[4].value
       })
     });
-    const body = await response.json();
-    console.log(body);
     this.props.history.push('/');
     this.props.handleConfirmCharacterSelection(this.state.characterName, true);
   };
