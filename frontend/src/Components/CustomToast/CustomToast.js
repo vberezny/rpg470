@@ -5,7 +5,9 @@ import {
   ToastBody, Button
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import {ReactComponent as Clear} from '../../Assets/close_icon24px.svg';
+import {
+  ReactComponent as Clear
+} from '../../Assets/close_icon24px.svg';
 import './CustomToast.scss';
 
 function CustomToast(props) {

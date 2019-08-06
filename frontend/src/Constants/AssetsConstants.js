@@ -1,4 +1,5 @@
 const ASSET_NAMES = {
+  CLOSE_ICON: 'close_icon',
   BLUE_POTION: 'blue_potion',
   DUNGEON_TILE: 'dungeon_tile',
   GOBLIN: 'Goblin',
@@ -9,6 +10,7 @@ const ASSET_NAMES = {
 };
 
 const ASSET_ENDPOINTS = {
+  'close_icon': '/assets/close_icon24px.svg',
   'blue_potion': '/assets/blue_potion.png',
   'dungeon_tile': '/assets/dungeon_tile.png',
   'Goblin': '/assets/goblin.png',
