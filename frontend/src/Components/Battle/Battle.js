@@ -47,7 +47,7 @@ function CharacterCard(props) {
             <Progress className="battle-char-health-bar health-bar" value={healthValue} color="danger" />
             <CardImg className="char-overview-cardimg cardimg"
                      // TODO: add a method to determine correct avatar based on character type
-                     src={/*character.avatar*/ASSET_ENDPOINTS[ASSET_NAMES]}/>
+                     src={/*character.avatar*/ASSET_ENDPOINTS[ASSET_NAMES.PRINCESS_AVATAR]}/>
             <CardBody className="char-overview-cardbody cardbody">
               <CardTitle className="char-overview-cardtitle cardtitle cardtext-color">{character.name}</CardTitle>
               <CardSubtitle className="char-overview-cardsubtitle cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + characterLevel}</CardSubtitle>
