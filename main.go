@@ -26,16 +26,18 @@ func healthCheck(database *sql.DB, server *http.Server) {
 	const maxTicks = 100
 	var currentTicks int64 = 0
 	for {
-		currentTicks += 1
-		log.Println(currentTicks)
-		_, err := database.Query("SELECT 1 FROM Users")
-		// TODO: use latest migration as reference for healthcheck
+		_, err := database.Query("SELECT 1 FROM Battles")
 		if err == nil {
 			break
 		} else if currentTicks >= maxTicks {
 			log.Fatalf("Could not connect to database successfully")
 		}
+		log.Printf("Time since start: %v seconds\n", currentTicks*2)
+		log.Printf("error: %v\n", err)
+
 		time.Sleep(2 * time.Second)
+		currentTicks += 1
+
 	}
 	err := server.Close()
 	log.Println(err)
