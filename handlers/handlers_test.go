@@ -866,7 +866,7 @@ func TestHandleGetNPCs(t *testing.T) {
 	defer func() {
 		// we make sure that all expectations were met
 		if err := mock.ExpectationsWereMet(); err != nil {
-				t.Errorf("there were unfulfilled expectations: %s", err)
+			t.Errorf("there were unfulfilled expectations: %s", err)
 		}
 	}()
 
@@ -897,7 +897,7 @@ func TestHandleGetNPCs(t *testing.T) {
 		MagicDefense: 6,
 	}
 
-	 npc3 := shared.NPC{
+	npc3 := shared.NPC{
 		Id:           1,
 		Name:         "Imp",
 		Type:         "Monster",

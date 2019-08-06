@@ -20,6 +20,7 @@ var handleMessagesRoutineExit = make(map[string]chan struct{}) // broadcast chan
 
 var channels = make([]string, 0)
 var clientsMutex = &sync.Mutex{}
+
 //var handleMessagesRoutineExitMutex = &sync.Mutex{}
 //var broadcastMutex = &sync.Mutex{} // not sure if need yet
 

@@ -431,44 +431,44 @@ func HandleUserCharacters(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleGetNPCs(w http.ResponseWriter, r *http.Request) {
-		EnableCors(&w)
-		rows, err := Database.Query(`SELECT id, name, type, level, description, attack, 
+	EnableCors(&w)
+	rows, err := Database.Query(`SELECT id, name, type, level, description, attack, 
 										defense, health, magic_attack, magic_defense
 										FROM npcs`)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
+		return
+	}
+	defer func() {
+		err := rows.Close()
 		if err != nil {
-				helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
-				return
+			log.Println("error closing rows in HandleGetNPCs: ", err)
 		}
-		defer func() {
-				err := rows.Close()
-				if err != nil {
-						log.Println("error closing rows in HandleGetNPCs: ", err)
-				}
-		}()
+	}()
 
-		npcs := shared.NPCs{[]shared.NPC{}}
-		for rows.Next() {
-				npc := shared.NPC{}
-				err := rows.Scan(&npc.Id, &npc.Name, &npc.Type, &npc.Level, &npc.Description, &npc.Attack, &npc.Defense,
-						&npc.Health, &npc.MagicAttack, &npc.MagicDefense)
-				if err != nil {
-						msg := fmt.Sprintf("error scanning row, aborting. error: %v", err)
-						helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
-						return
-				}
-				npcs.NPCs = append(npcs.NPCs, npc)
-		}
-
-		resp, err := json.Marshal(npcs)
+	npcs := shared.NPCs{[]shared.NPC{}}
+	for rows.Next() {
+		npc := shared.NPC{}
+		err := rows.Scan(&npc.Id, &npc.Name, &npc.Type, &npc.Level, &npc.Description, &npc.Attack, &npc.Defense,
+			&npc.Health, &npc.MagicAttack, &npc.MagicDefense)
 		if err != nil {
-				helpers.LogAndSendErrorMessage(w, "Could not marshal JSON body!", http.StatusInternalServerError)
-				return
+			msg := fmt.Sprintf("error scanning row, aborting. error: %v", err)
+			helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+			return
 		}
+		npcs.NPCs = append(npcs.NPCs, npc)
+	}
 
-		_, err = w.Write(resp)
-		if err != nil {
-				log.Printf(helpers.WritingErrorFormatString, err)
-		}
+	resp, err := json.Marshal(npcs)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, "Could not marshal JSON body!", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = w.Write(resp)
+	if err != nil {
+		log.Printf(helpers.WritingErrorFormatString, err)
+	}
 }
 
 func HandleSaveBattle(w http.ResponseWriter, r *http.Request) {
@@ -512,4 +512,196 @@ func HandleSaveBattle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf(helpers.WritingErrorFormatString, err)
 	}
+}
+
+func HandleCharacterInventory(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
+	if _, err := helpers.UserLoggedIn(r); err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("User not authenticated, please log in! error: %v", err), http.StatusForbidden)
+		return
+	}
+
+	characterName := mux.Vars(r)["character_name"]
+
+	var userId int
+	username, err := helpers.GetUsername(r)
+	query := `SELECT id FROM users WHERE username = $1`
+	row := Database.QueryRow(query, username)
+	err = row.Scan(&userId)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	var characterId int
+	rowCharacter := Database.QueryRow(`SELECT characterid FROM characters WHERE charactername = $1 AND userid = $2`, characterName, userId)
+
+	err = rowCharacter.Scan(&characterId)
+	if err != nil {
+		var strErr string
+		var header int
+		if err == sql.ErrNoRows {
+			strErr = fmt.Sprintf("error querying database (character doesn't exist): %v", err)
+			header = http.StatusNotFound
+		} else {
+			strErr = fmt.Sprintf("error querying database (other sql error): %v", err)
+			log.Printf(strErr)
+			header = http.StatusInternalServerError
+		}
+		helpers.LogAndSendErrorMessage(w, strErr, header)
+		return
+	}
+
+	inventoryQuery := `
+	WITh inventory_items_subquery AS (
+		WITH inventory_subquery AS (
+			SELECT itemid, numheld
+			FROM inventory
+			WHERE characterid = $1
+		)
+		SELECT inventory_subquery.itemid as itemid, inventory_subquery.numheld as numheld, items.typeref, items.subref
+		FROM items,
+			 inventory_subquery
+		WHERE items.id = inventory_subquery.itemid
+	) SELECT inventory_items_subquery.itemid, inventory_items_subquery.numheld, itemtypes.typename, inventory_items_subquery.subref
+	FROM itemtypes, inventory_items_subquery WHERE inventory_items_subquery.typeref = itemtypes.id;
+	`
+
+	rows, err := Database.Query(inventoryQuery, characterId)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
+		return
+	}
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Println("error closing rows in HandleCharacterInventory: ", err)
+		}
+	}()
+	var itemId int
+	var numHeld int
+	var typename string
+	var subref int
+	weapons := []shared.Weapon{}
+	consumables := []shared.Consumable{}
+	armours := []shared.Armour{}
+	for rows.Next() {
+		err := rows.Scan(&itemId, &numHeld, &typename, &subref)
+		if err != nil {
+			msg := fmt.Sprintf("error scanning row, aborting. error: %v", err)
+			helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+			return
+		}
+		switch typename {
+		case "Weapon":
+			weapon := shared.Weapon{}
+			row := Database.QueryRow("SELECT id, name, damage, speed, critchance, magic_damage FROM weapons WHERE id = $1", subref)
+			err := row.Scan(&weapon.Id, &weapon.Name, &weapon.Damage, &weapon.Speed, &weapon.CritChance, &weapon.MagicDamage)
+			if err != nil {
+				msg := fmt.Sprintf("error scanning weapons row, aborting. error: %v", err)
+				helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+				return
+			}
+			for i := 0; i < numHeld; i ++ {
+				weapons = append(weapons, weapon)
+			}
+		case "Armour":
+			armour := shared.Armour{}
+			row := Database.QueryRow("SELECT id, name, defense, weight, magic_defense FROM armour WHERE id = $1", subref)
+			err := row.Scan(&armour.Id, &armour.Name, &armour.Defense, &armour.Weight, &armour.MagicDefense)
+			if err != nil {
+				msg := fmt.Sprintf("error scanning armours row, aborting. error: %v", err)
+				helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+				return
+			}
+			for i := 0; i < numHeld; i ++ {
+				armours = append(armours, armour)
+			}
+		case "Consumables":
+			consumable := shared.Consumable{}
+			row := Database.QueryRow("SELECT id, name, healing, damage FROM consumables WHERE id = $1", subref)
+			err := row.Scan(&consumable.Id, &consumable.Name, &consumable.Healing, &consumable.Damage)
+			if err != nil {
+				msg := fmt.Sprintf("error scanning consumables row, aborting. error: %v", err)
+				helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+				return
+			}
+			for i := 0; i < numHeld; i ++ {
+				consumables = append(consumables, consumable)
+			}
+		default:
+			msg := fmt.Sprintf("itemtype: %v unknown", typename)
+			helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+			return
+		}
+
+	}
+	inventory := shared.Inventory{
+		Weapons: weapons,
+		Consumables: consumables,
+		Armours: armours,
+	}
+	resp, err := json.Marshal(inventory)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, "Could not marshal JSON body!", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = w.Write(resp)
+	if err != nil {
+		log.Printf(helpers.WritingErrorFormatString, err)
+	}
+}
+
+func HandleCharacterBattles(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
+
+	_, err := helpers.GetUsername(r)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, err.Error(), http.StatusUnauthorized)
+	}
+	if _, err := helpers.UserLoggedIn(r); err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("User not authenticated, please log in! error: %v", err), http.StatusForbidden)
+		return
+	}
+
+	characterId := mux.Vars(r)["character_id"]
+	sqlStatement := `SELECT won, escaped, opponent, log, battletime FROM Battles WHERE characterid = $1`
+	rows, err := Database.Query(sqlStatement, characterId)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("error querying rows: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Println("error closing rows in HandleCharacterBattles: ", err)
+		}
+	}()
+
+	battles := shared.Battles{[]shared.Battle{}}
+
+	for rows.Next() {
+		battle := shared.Battle{}
+		err := rows.Scan(&battle.Won, &battle.Escaped, &battle.Opponent, pq.Array(&battle.Log), &battle.TimeStamp)
+		if err != nil {
+			msg := fmt.Sprintf("error scanning row, aborting. error: %v", err)
+			helpers.LogAndSendErrorMessage(w, msg, http.StatusInternalServerError)
+			return
+		}
+		battles.Battles = append(battles.Battles, battle)
+	}
+
+	resp, err := json.Marshal(battles)
+	if err != nil {
+		helpers.LogAndSendErrorMessage(w, "Could not marshal JSON body!", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = w.Write(resp)
+	if err != nil {
+		log.Printf(helpers.WritingErrorFormatString, err)
+	}
+
 }

@@ -19,7 +19,8 @@ const GLOBAL_STRINGS = {
   PASSWORD_LABEL_MSG: 'Password',
   FULL_NAME_LABEL: 'Full name',
   CHARACTER_API_RESPONSE_INDEX: 'characters',
-  NPC_API_RESPONSE_INDEX: 'npcs'
+  NPC_API_RESPONSE_INDEX: 'npcs',
+  BATTLE_HISTORY_API_RESPONSE_INDEX: 'battles'
 };
 
 const GLOBAL_URLS = {
@@ -31,7 +32,8 @@ const GLOBAL_URLS = {
   GET_API_USERS_LOGGED_IN: '/api/users/logged_in',
   GET_API_CHARACTERS: '/api/characters',
   GET_API_NPCS: '/api/npcs',
-  POST_API_SAVE_BATTLE: '/api/battles'
+  POST_API_SAVE_BATTLE: '/api/battles',
+  GET_API_BATTLE_HISTORY: '/api/battles/'
 };
 
 export {

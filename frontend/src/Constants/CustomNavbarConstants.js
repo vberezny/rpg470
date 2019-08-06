@@ -3,6 +3,8 @@ const STRINGS = {
   NAVBAR_NAV_HOME_MSG: 'Home',
   NAVBAR_NAV_BATTLE_MSG: 'Battle',
   NAVBAR_NAV_SHOP_MSG: 'Shop',
+  NAVBAR_NAV_BATTLE_NPC_MSG: 'Battle An NPC',
+  NAVBAR_NAV_BATTLE_HISTORY_MSG: 'Battle History',
   NAVBAR_NAV_EXPLORE_MSG: 'Explore (Coming Soon)',
   NAVBAR_NAV_CHARACTER_MSG: 'Character',
   NAVBAR_NAV_LOG_OUT_BUTTON_MSG: 'Log out',
