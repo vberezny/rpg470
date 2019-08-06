@@ -100,7 +100,7 @@ type Battles struct {
 	Battles []Battle `json:"battles"`
 }
 
-func (c *Character) CalculateStats()   {
+func (c *Character) CalculateStats() {
 	c.Health = c.Stamina * 2
 	c.Attack = int(math.Round(float64(c.Strength) / 3))
 	c.Defense = int(math.Round(float64(c.Stamina+c.Agility) / 6))
