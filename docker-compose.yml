@@ -18,6 +18,7 @@ services:
       dockerfile: migration.Dockerfile
     depends_on:
       - db
+    restart: on-failure
   db:
     image: postgres
     environment:

@@ -67,9 +67,7 @@ function AssignStatsTable(props) {
               <th>{STRINGS.CREATE_CHARACTER_ASSIGN_STATS_VALUE_MSG}</th>
             </tr>
             </thead>
-            <tbody>
-            {assignStatsTableRows}
-            </tbody>
+            <tbody>{assignStatsTableRows}</tbody>
           </Table>
         </Card>
       </div>
