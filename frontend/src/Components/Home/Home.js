@@ -9,10 +9,7 @@ import {
   CardText,
   CardTitle,
   Input,
-  Table,
-  Toast,
-  ToastHeader,
-  ToastBody
+  Table
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
@@ -25,14 +22,11 @@ import {
   GLOBAL_URLS,
   GLOBAL_STRINGS
 } from '../../Constants/GlobalConstants';
+import {
+  ASSET_NAMES,
+  ASSET_ENDPOINTS
+} from '../../Constants/AssetsConstants';
 import './Home.scss';
-import PrincessAvatar from '../../Assets/princess_avatar.png';
-import Goblin from '../../Assets/goblin.png';
-import Zombie from '../../Assets/zombie.png';
-import Imp from '../../Assets/imp.png';
-import GrassMap from '../../Assets/grass_map.png';
-import BluePotion from '../../Assets/blue_potion.png';
-import {ReactComponent as Clear} from '../../Assets/CloseIcon24px.svg';
 
 function SelectCharacterModal(props) {
   let characters;
@@ -42,7 +36,7 @@ function SelectCharacterModal(props) {
       return (
         <div className="select-character-card-wrapper" key={index}>
           <Card className="">
-            <CardImg className="cardimg" src={PrincessAvatar} />
+            <CardImg className="cardimg" src={ASSET_ENDPOINTS[ASSET_NAMES.PRINCESS_AVATAR]} />
             <CardBody className="cardbody">
               <CardTitle className="cardtitle cardtext-color">{character.name}</CardTitle>
               <CardSubtitle className="cardsubtitle">{STRINGS.HOME_LEVEL_MSG + characterLevel}</CardSubtitle>
@@ -169,7 +163,7 @@ class Home extends React.Component {
               <div className="mini-char-overview-intro-flex-container overview-intro-flex-container">
                 <div className="mini-char-overview-intro overview-intro">
                   <CardImg className="mini-char-overview-cardimg cardimg"
-                           src={/* TODO: Proper character avatar */ PrincessAvatar}/>
+                           src={/* TODO: Proper character avatar */ ASSET_ENDPOINTS[ASSET_NAMES.PRINCESS_AVATAR]}/>
                   <CardBody className="mini-char-overview-cardbody cardbody">
                     <CardTitle className="mini-char-overview-cardtitle cardtitle cardtext-color">{this.state.character.name}</CardTitle>
                     <CardSubtitle className="mini-char-overview-cardsubtitle cardsubtitle">{STRINGS.HOME_LEVEL_MSG + characterLevel}</CardSubtitle>
@@ -222,7 +216,7 @@ class Home extends React.Component {
       return (
         <Card key={index} className="battle-npc-card">
            {/*TODO: figure out correct avatars*/}
-          <CardImg className="battle-npc-cardimg cardimg" src={Imp}/>
+          <CardImg className="battle-npc-cardimg cardimg" src={ASSET_ENDPOINTS[npcData.name]}/>
           <CardBody className="battle-npc-cardbody cardbody">
             <div className="battle-npc-cardtitle-wrapper cardtitle-wrapper">
               <CardTitle className="battle-npc-cardtitle cardtitle cardtext-color">{npcData.name}</CardTitle>
@@ -262,17 +256,17 @@ class Home extends React.Component {
       {
         mapTitle: 'Grasslands',
         mapText: 'Some text about this map',
-        mapImgSrc: GrassMap
+        mapImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.GRASS_MAP]
       },
       {
         mapTitle: 'Grasslands',
         mapText: 'Some text about this map',
-        mapImgSrc: GrassMap
+        mapImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.GRASS_MAP]
       },
       {
         mapTitle: 'Grasslands',
         mapText: 'Some text about this map',
-        mapImgSrc: GrassMap
+        mapImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.GRASS_MAP]
       }
     ];
 
@@ -295,25 +289,25 @@ class Home extends React.Component {
         shopItemTitle: 'Potion',
         shopItemSubtitle: 'Costs 5 gold',
         shopItemText: 'Some text about this item',
-        shopItemImgSrc: BluePotion
+        shopItemImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.BLUE_POTION]
       },
       {
         shopItemTitle: 'Potion',
         shopItemSubtitle: 'Costs 5 gold',
         shopItemText: 'Some text about this item',
-        shopItemImgSrc: BluePotion
+        shopItemImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.BLUE_POTION]
       },
       {
         shopItemTitle: 'Potion',
         shopItemSubtitle: 'Costs 5 gold',
         shopItemText: 'Some text about this item',
-        shopItemImgSrc: BluePotion
+        shopItemImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.BLUE_POTION]
       },
       {
         shopItemTitle: 'Potion',
         shopItemSubtitle: 'Costs 5 gold',
         shopItemText: 'Some text about this item',
-        shopItemImgSrc: BluePotion
+        shopItemImgSrc: ASSET_ENDPOINTS[ASSET_NAMES.BLUE_POTION]
       }
     ];
 
