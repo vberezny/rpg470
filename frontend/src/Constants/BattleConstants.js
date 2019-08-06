@@ -13,7 +13,7 @@ const STRINGS = {
   BATTLE_LOG_CONTAINER_HEADER_MSG: 'Battle Log',
   BATTLE_BUTTON_ATTACK: 'Attack',
   BATTLE_BUTTON_MAGIC: 'Magic Attack',
-  BATTLE_BUTTON_INVENTORY: 'Inventory',
+  BATTLE_BUTTON_USE_POTION: 'Use Potion',
   BATTLE_BUTTON_ESCAPE: 'Run Away',
   BATTLE_SELECT_NPC_MODAL_HEADER_MSG: 'Select the NPC you wish to battle',
   BATTLE_SELECT_NPC_MODAL_SELECT_BUTTON_MSG: 'Battle',
@@ -42,7 +42,11 @@ const STRINGS = {
   BATTLE_LOG_COLOR_INFO: 'info',
   BATTLE_LOG_COLOR_SUCCESS: 'success',
   BATTLE_LOG_COLOR_WARNING: 'warning',
-  BATTLE_LOG_COLOR_DANGER: 'danger'
+  BATTLE_LOG_COLOR_DANGER: 'danger',
+  BATTLE_INVENTORY_POTION: 'Potion',
+  BATTLE_INVENTORY_POTIONS: 'Potions: ',
+  BATTLE_LOG_MESSAGE_HEAL_SUCCESS: 'You used a potion',
+  BATTLE_LOG_MESSAGE_HEAL_FAIL: 'You do not have any potions remaining'
 };
 
 const NUMBERS = {

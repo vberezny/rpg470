@@ -43,6 +43,7 @@ function CharacterCard(props) {
             <CardBody className="char-overview-cardbody cardbody">
               <CardTitle className="char-overview-cardtitle cardtitle cardtext-color">{character.name}</CardTitle>
               <CardSubtitle className="char-overview-cardsubtitle cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + characterLevel}</CardSubtitle>
+              <CardSubtitle className="char-overview-cardsubtitle-potions cardsubtitle">{STRINGS.BATTLE_INVENTORY_POTIONS + props.potionCount}</CardSubtitle>
             </CardBody>
           </div>
         </div>
@@ -82,6 +83,7 @@ function CharacterCard(props) {
 
 CharacterCard.propTypes = {
   character: PropTypes.object,
+  potionCount: PropTypes.number
 };
 
 function NpcCard(props) {
@@ -291,7 +293,9 @@ class Battle extends React.Component {
       character: {},
       npc: {},
       battleLog: [],
-      saveLog: []
+      saveLog: [],
+      consumables: [],
+      potions: []
     }
   };
 
@@ -309,6 +313,21 @@ class Battle extends React.Component {
           });
         }
       });
+      const responseInventory = await fetch(`${GLOBAL_URLS.GET_API_CHARACTER_INVENTORY_PT_1}${this.props.currentCharacterName}${GLOBAL_URLS.GET_API_CHARACTER_INVENTORY_PT_2}`);
+      const bodyInventory = await responseInventory.json();
+      if (bodyInventory) {
+        const consumables = bodyInventory[GLOBAL_STRINGS.INVENTORY_CONSUMABLES_API_RESPONSE_INDEX];
+        let potions = [];
+        consumables.forEach(consumable => {
+          if (consumable.name === STRINGS.BATTLE_INVENTORY_POTION) {
+            potions.push(consumable);
+          }
+        });
+        this.setState({
+          consumables,
+          potions
+        });
+      }
     }
     if (bodyNPCs) {
       const allNPCs = bodyNPCs[GLOBAL_STRINGS.NPC_API_RESPONSE_INDEX];
@@ -398,14 +417,33 @@ class Battle extends React.Component {
       })
     });
     const body = await response.json();
-    console.log(body);
   };
 
 
-  handleInventory = () => {
-    // TODO: hook up consumables once inventory endpoint is complete, use 'info' color for battle log and count item
-    //  use as 1 turn
-    console.log("Inventory not yet available");
+  handleUsePotion = () => {
+    if (this.state.potions.length > NUMBERS.BATTLE_GENERIC_ZERO_VALUE) {
+      let potion = this.state.potions.pop();
+      let character = this.state.character;
+      if (character.currentHealth + potion.healing > character.health) {
+        character.currentHealth = character.health;
+      } else {
+        character.currentHealth =  character.currentHealth + potion.healing;
+      }
+      this.setState({
+        character
+      });
+      const message = STRINGS.BATTLE_LOG_MESSAGE_HEAL_SUCCESS;
+      const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+      // logs successful potion use
+      this.handlePrependToBattleLog(message, color);
+      // npc counter attack
+      setTimeout(this.npcAttack, NUMBERS.BATTLE_NPC_ATTACK_TIMEOUT_VAL);
+    } else {
+      const message = STRINGS.BATTLE_LOG_MESSAGE_HEAL_FAIL;
+      const color = STRINGS.BATTLE_LOG_COLOR_SUCCESS;
+      // logs failed potion use
+      this.handlePrependToBattleLog(message, color);
+    }
   };
 
   handleEscape = () => {
@@ -556,7 +594,7 @@ class Battle extends React.Component {
             <h1 className="battle-header-text">{STRINGS.BATTLE_HEADER_MSG}</h1>
             <div className="battle-container container">
               <div className="battle-card-container container">
-                <CharacterCard character={this.state.character}/>
+                <CharacterCard character={this.state.character} potionCount={this.state.potions.length}/>
                 <NpcCard npc={this.state.npc}/>
               </div>
               <h3 className="battle-container-header-text">{STRINGS.BATTLE_CONTAINER_HEADER_MSG}</h3>
@@ -578,9 +616,9 @@ class Battle extends React.Component {
                 <Button
                     className="inventory-button battle-button"
                     color="success"
-                    onClick={this.handleInventory}
+                    onClick={this.handleUsePotion}
                 >
-                  {STRINGS.BATTLE_BUTTON_INVENTORY}
+                  {STRINGS.BATTLE_BUTTON_USE_POTION}
                 </Button>
                 <Button
                     className="escape-button battle-button"

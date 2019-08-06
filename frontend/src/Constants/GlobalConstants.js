@@ -20,7 +20,8 @@ const GLOBAL_STRINGS = {
   FULL_NAME_LABEL: 'Full name',
   CHARACTER_API_RESPONSE_INDEX: 'characters',
   NPC_API_RESPONSE_INDEX: 'npcs',
-  BATTLE_HISTORY_API_RESPONSE_INDEX: 'battles'
+  BATTLE_HISTORY_API_RESPONSE_INDEX: 'battles',
+  INVENTORY_CONSUMABLES_API_RESPONSE_INDEX: 'consumables'
 };
 
 const GLOBAL_URLS = {
@@ -33,7 +34,9 @@ const GLOBAL_URLS = {
   GET_API_CHARACTERS: '/api/characters',
   GET_API_NPCS: '/api/npcs',
   POST_API_SAVE_BATTLE: '/api/battles',
-  GET_API_BATTLE_HISTORY: '/api/battles/'
+  GET_API_BATTLE_HISTORY: '/api/battles/',
+  GET_API_CHARACTER_INVENTORY_PT_1: '/api/characters/',
+  GET_API_CHARACTER_INVENTORY_PT_2: '/inventory'
 };
 
 export {
