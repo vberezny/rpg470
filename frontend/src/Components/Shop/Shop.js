@@ -18,12 +18,12 @@ function ShopItemList(props) {
   const items = props.items.map((item, index) => {
     let restOfItem = [];
     Object.keys(item).forEach(key => {
-      if (key !== 'id' && key !== 'name') {
+      if (key !== STRINGS.SHOP_PAGE_ID_KEY && key !== STRINGS.SHOP_PAGE_NAME_KEY) {
         let newKey;
-        if (key === 'magicDamage') {
-          newKey = 'Magic attack';
-        } else if (key === 'magicDefense') {
-          newKey = 'Magic defense';
+        if (key === STRINGS.SHOP_PAGE_MAGIC_DAMAGE_KEY) {
+          newKey = STRINGS.SHOP_PAGE_MAGIC_ATTACK_KEY_MSG;
+        } else if (key === STRINGS.SHOP_PAGE_MAGIC_DEFENSE_KEY) {
+          newKey = STRINGS.SHOP_PAGE_MAGIC_DEFENSE_KEY_MSG;
         } else {
           newKey = key;
         }
