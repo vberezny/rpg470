@@ -9,6 +9,7 @@ import Signup from '../Signup/Signup';
 import Home from '../Home/Home';
 import CreateCharacter from '../CreateCharacter/CreateCharacter';
 import Battle from '../Battle/Battle';
+import Shop from '../Shop/Shop';
 import BattleHistory from '../BattleHistory/BattleHistory';
 
 class App extends React.Component {
@@ -123,6 +124,13 @@ class App extends React.Component {
         <Route
           path="/battles"
           component={() => this.handleRenderProtectedPage(<BattleHistory
+            handleUnauthenticate={this.handleUnauthenticate}
+            currentCharacterName={this.state.currentCharacterName}
+          />)}
+        />
+        <Route
+          path="/shop"
+          component={() => this.handleRenderProtectedPage(<Shop
             handleUnauthenticate={this.handleUnauthenticate}
             currentCharacterName={this.state.currentCharacterName}
           />)}

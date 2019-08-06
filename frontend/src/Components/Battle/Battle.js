@@ -543,7 +543,7 @@ class Battle extends React.Component {
             npcName={this.state.npc.name}
         />
         <CustomNavbar handleLogout={this.props.handleUnauthenticate}/>
-         {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
+        {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="battle-centered-content full-viewport-with-navbar centered content container">
           <SelectNPCModal
               npcs={this.state.allNPCs}

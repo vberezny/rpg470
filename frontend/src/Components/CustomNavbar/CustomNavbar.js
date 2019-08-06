@@ -51,6 +51,11 @@ function CustomNavbar(props) {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            <NavItem>
+              <NavLink href="/#/shop">
+                {STRINGS.NAVBAR_NAV_SHOP_MSG}
+              </NavLink>
+            </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret disabled className="disabled">
                 {STRINGS.NAVBAR_NAV_EXPLORE_MSG}
@@ -58,9 +63,6 @@ function CustomNavbar(props) {
               <DropdownMenu right>
                 <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_MAP_MSG}
-                </DropdownItem>
-                <DropdownItem disabled>
-                  {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_SHOP_MSG}
                 </DropdownItem>
                 <DropdownItem disabled>
                   {STRINGS.NAVBAR_NAV_EXPLORE_DROPDOWN_QUESTS_MSG}
