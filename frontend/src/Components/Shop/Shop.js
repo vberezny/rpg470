@@ -6,20 +6,45 @@ import {
   ListGroupItemHeading,
   ListGroupItemText,
   Input,
-  InputGroup
+  InputGroup,
+  Table
 } from 'reactstrap';
+import {
+  STRINGS
+} from '../../Constants/ShopConstants';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Shop.scss';
 
 function ShopItemList(props) {
   const items = props.items.map((item, index) => {
+    let restOfItem = [];
+    Object.keys(item).forEach(key => {
+      restOfItem.push([key, item[key]]);
+    });
+    restOfItem = restOfItem.map((itemKey, index) => {
+      return (
+        <tr key={index}>
+          <td>{restOfItem[index][0]}</td>
+          <td>{restOfItem[index][1]}</td>
+        </tr>
+      );
+    });
+
     return (
-      <ListGroupItem key={index}>
+      <ListGroupItem key={index} className="shop-item-listgroup-item">
+        <ListGroupItemHeading className="shop-item-listgroup-item-heading">
+          {item.name}
+        </ListGroupItemHeading>
+        <Table>
+          <tbody>
+            {restOfItem}
+          </tbody>
+        </Table>
       </ListGroupItem>
     )
   });
   return (
-    <ListGroup>
+    <ListGroup className="shop-item-list">
       {items}
     </ListGroup>
   );
@@ -39,7 +64,18 @@ class Shop extends React.Component {
 
   render () {
     const mockShopItems = [
-
+      {
+        id: 1,
+        name: 'Sword',
+        damage: 3,
+        magicDamage: 0
+      },
+      {
+        id: 5,
+        name: 'Chest Plate',
+        defense: 5,
+        magicDefense: 0
+      }
     ];
 
     return (
@@ -47,8 +83,8 @@ class Shop extends React.Component {
         <CustomNavbar />
         {/*TODO: Change CSS such that we don't need this full-viewport-with-navbar class - use flexbox page-containers instead*/}
         <div className="shop-centered-content full-viewport-with-navbar centered content container">
-          <h1 className="shop-header-text">Shop</h1>
-          <div className-="shop-item-list-container container">
+          <h1 className="shop-header-text">{STRINGS.SHOP_PAGE_HEADER_MSG}</h1>
+          <div className="shop-item-list-container container">
             <ShopItemList items={mockShopItems}/>
           </div>
         </div>
