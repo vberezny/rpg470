@@ -34,10 +34,34 @@ type Characters struct {
 	Characters []Character `json:"characters"`
 }
 
-type Item struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
+type Armour struct {
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Defense      int    `json:"defense"`
+	MagicDefense int    `json:"magic_defense"`
+	Weight       int    `json:"weight"`
+}
+
+type Consumable struct {
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	Healing int    `json:"healing"`
+	Damage  int    `json:"damage"`
+}
+
+type Weapon struct {
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Damage      int    `json:"damage"`
+	MagicDamage int    `json:"magic_damage"`
+	Speed       int    `json:"speed"`
+	CritChance  int    `json:"critchance"`
+}
+
+type Inventory struct {
+	Weapons     []Weapon     `json:"weapons"`
+	Consumables []Consumable `json:"consumables"`
+	Armours     []Armour     `json:"armours"`
 }
 
 type Response struct {
