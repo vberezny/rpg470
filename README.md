@@ -1,5 +1,7 @@
 # CMPT 470 Final Project - MMORPG Game
 
+### App is live: [https://cmpt470finalprojectrpg.herokuapp.com]
+
 ## How to build and run the app locally
 
 - After cloning, make sure this project is in "$GOPATH/src/sfu.ca/apruner/cmpt470finalprojectrpg", otherwise you will run into issues
