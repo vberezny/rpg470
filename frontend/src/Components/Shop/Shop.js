@@ -4,10 +4,9 @@ import {
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
-  ListGroupItemText,
   Input,
-  InputGroup,
-  Table
+  Table,
+  Button
 } from 'reactstrap';
 import {
   STRINGS
@@ -19,27 +18,46 @@ function ShopItemList(props) {
   const items = props.items.map((item, index) => {
     let restOfItem = [];
     Object.keys(item).forEach(key => {
-      restOfItem.push([key, item[key]]);
+      if (key !== 'id' && key !== 'name') {
+        let newKey;
+        if (key === 'magicDamage') {
+          newKey = 'Magic attack';
+        } else if (key === 'magicDefense') {
+          newKey = 'Magic defense';
+        } else {
+          newKey = key;
+        }
+        newKey = newKey[0].toUpperCase() + newKey.slice(1, newKey.length);
+        restOfItem.push([newKey, item[key]]);
+      }
     });
     restOfItem = restOfItem.map((itemKey, index) => {
       return (
         <tr key={index}>
-          <td>{restOfItem[index][0]}</td>
-          <td>{restOfItem[index][1]}</td>
+          <td className="shop-item-listgroup-item-text">{restOfItem[index][0]}</td>
+          <td className="shop-item-listgroup-item-text">{restOfItem[index][1]}</td>
         </tr>
       );
     });
 
     return (
       <ListGroupItem key={index} className="shop-item-listgroup-item">
-        <ListGroupItemHeading className="shop-item-listgroup-item-heading">
+        <ListGroupItemHeading className="shop-item-listgroup-item-heading shop-item-listgroup-item-text">
           {item.name}
         </ListGroupItemHeading>
-        <Table>
-          <tbody>
-            {restOfItem}
-          </tbody>
-        </Table>
+        <div className="stop-item-listgroup-item-container">
+          <Table className="shop-item-listgroup-item-table">
+            <tbody>
+              {restOfItem}
+            </tbody>
+          </Table>
+          <div className="shop-item-listgroup-item-buy-container">
+            <Input placeholder="How many?" type="number" className="shop-item-listgroup-item-buy-input"/>
+            <Button onClick={props.handleBuy} color="primary" className="shop-item-listgroup-item-buy-button">
+              {STRINGS.SHOP_PAGE_BUY_BUTTON_MSG}
+            </Button>
+          </div>
+        </div>
       </ListGroupItem>
     )
   });
@@ -50,17 +68,13 @@ function ShopItemList(props) {
   );
 }
 
-class Shop extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: []
-    };
-  }
+ShopItemList.propTypes = {
+  items: PropTypes.array,
+  handleBuy: PropTypes.func
+};
 
-  componentDidMount() {
-    // TODO: fetch for shop items
-  }
+class Shop extends React.Component {
+  // TODO: Shop State for actual shopping
 
   render () {
     const mockShopItems = [
