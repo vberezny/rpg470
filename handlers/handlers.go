@@ -296,8 +296,6 @@ func HandleCharacterCreate(w http.ResponseWriter, r *http.Request) {
 		helpers.LogAndSendErrorMessage(w, fmt.Sprintf("User not authenticated, please log in! error: %v", err), http.StatusForbidden)
 		return
 	}
-	// TODO: maybe make a separate constructor function for this? or make default values in the database for new
-	//  characters? or allow custom values (i.e. fixed number of assignable attribute points)?
 	character := shared.Character{
 		Level: 1,
 	}
@@ -347,6 +345,35 @@ func HandleCharacterCreate(w http.ResponseWriter, r *http.Request) {
 		helpers.LogAndSendErrorMessage(w, strErr, http.StatusBadRequest)
 		return
 	}
+
+	sqlStatement = `SELECT characterid FROM Characters WHERE charactername = $1`
+	row = Database.QueryRow(sqlStatement, character.CharacterName)
+	err = row.Scan(&character.CharacterId)
+	if err != nil {
+		var strErr string
+		var header int
+		if err == sql.ErrNoRows {
+			strErr = fmt.Sprintf("error querying database (user doesn't exist): %v", err)
+			header = http.StatusNotFound
+		} else {
+			strErr = fmt.Sprintf("error querying database (other sql error): %v", err)
+			log.Printf(strErr)
+			header = http.StatusInternalServerError
+		}
+		helpers.LogAndSendErrorMessage(w, strErr, header)
+		return
+	}
+
+	// give each starting character 3 potions
+	sqlStatement = `INSERT INTO Inventory (characterid, itemid, numheld) VALUES ($1, $2, $3)`
+	_, err = Database.Exec(sqlStatement, character.CharacterId, 9, 3)
+
+	if err != nil {
+		strErr := fmt.Sprintf("Could not insert into database error: %v", err)
+		helpers.LogAndSendErrorMessage(w, strErr, http.StatusBadRequest)
+		return
+	}
+
 	character.UserId = userId
 	w.WriteHeader(http.StatusCreated)
 	encodedResponse, err := json.Marshal(character)
