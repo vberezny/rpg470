@@ -9,10 +9,7 @@ import {
   CardText,
   CardTitle,
   Input,
-  Table,
-  Toast,
-  ToastHeader,
-  ToastBody
+  Table
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
