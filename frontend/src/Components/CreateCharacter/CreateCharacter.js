@@ -17,9 +17,12 @@ import {
 import {
   GLOBAL_URLS
 } from '../../Constants/GlobalConstants';
+import {
+  ASSET_ENDPOINTS,
+  ASSET_NAMES
+} from '../../Constants/AssetsConstants';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './CreateCharacter.scss';
-import PrincessAvatar from '../../Assets/princess_avatar.png';
 
 function AssignStatsTable(props) {
   const assignStatsTableRows = props.stats.map((stat, index) => {
@@ -88,7 +91,7 @@ function AvatarSelect(props) {
     return (
       <FormGroup key={index} className="create-character-avatar-form-group" check>
         <Card className="create-character-avatar-card">
-          <CardImg src={PrincessAvatar}/>
+          <CardImg src={ASSET_ENDPOINTS[ASSET_NAMES.PRINCESS_AVATAR]}/>
         </Card>
         <div className="create-character-avatar-label-wrapper">
           <Input id={avatarInputId} type="radio" name="avatar-select" onChange={props.onChange}/>

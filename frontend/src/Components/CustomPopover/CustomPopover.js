@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap';
 import './CustomPopover.scss';
-import {ReactComponent as Clear} from '../../Assets/CloseIcon24px.svg';
+import {ReactComponent as Clear} from '../../Assets/close_icon24px.svg';
 
 // Functional wrapper component for the reactstrap popover
 function CustomPopover(props) {

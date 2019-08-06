@@ -17,12 +17,20 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap';
-import {NUMBERS, STRINGS} from '../../Constants/BattleConstants';
-import {GLOBAL_STRINGS, GLOBAL_URLS} from '../../Constants/GlobalConstants';
+import {
+  NUMBERS,
+  STRINGS
+} from '../../Constants/BattleConstants';
+import {
+  GLOBAL_STRINGS,
+  GLOBAL_URLS
+} from '../../Constants/GlobalConstants';
+import {
+  ASSET_ENDPOINTS,
+  ASSET_NAMES
+} from '../../Constants/AssetsConstants';
 import CustomNavbar from '../CustomNavbar/CustomNavbar';
 import './Battle.scss';
-import PrincessAvatar from '../../Assets/princess_avatar.png';
-import Goblin from "../../Assets/goblin.png";
 import {withRouter, Link} from "react-router-dom";
 import CustomSelectionModal from "../CustomSelectionModal/CustomSelectionModal";
 
@@ -39,7 +47,7 @@ function CharacterCard(props) {
             <Progress className="battle-char-health-bar health-bar" value={healthValue} color="danger" />
             <CardImg className="char-overview-cardimg cardimg"
                      // TODO: add a method to determine correct avatar based on character type
-                     src={/*character.avatar*/PrincessAvatar}/>
+                     src={/*character.avatar*/ASSET_ENDPOINTS[ASSET_NAMES]}/>
             <CardBody className="char-overview-cardbody cardbody">
               <CardTitle className="char-overview-cardtitle cardtitle cardtext-color">{character.name}</CardTitle>
               <CardSubtitle className="char-overview-cardsubtitle cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + characterLevel}</CardSubtitle>
@@ -98,7 +106,7 @@ function NpcCard(props) {
             <div className="battle-health-label text-center">{npc.currentHealth} / {npc.health}</div>
             <Progress className="battle-npc-health-bar health-bar" value={healthValue} color="danger" />
             <CardImg className="char-overview-cardimg cardimg"
-                     src={/*npc.avatar*/Goblin}/>
+                     src={ASSET_ENDPOINTS[npc.name]}/>
             <CardBody className="char-overview-cardbody cardbody">
               <CardTitle className="char-overview-cardtitle cardtitle cardtext-color">{npc.name}</CardTitle>
               <CardSubtitle className="char-overview-cardsubtitle cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + npcLevel}</CardSubtitle>
@@ -150,8 +158,8 @@ function SelectNPCModal(props) {
       const npcLevel = npc.level ? npc.level.toString() : null;
       return (
         <div className="select-npc-card-wrapper" key={index}>
-          <Card className="">
-            <CardImg className="cardimg" src={Goblin} />
+          <Card className="select-npc-card">
+            <CardImg className="cardimg" src={ASSET_ENDPOINTS[npc.name]} />
             <CardBody className="cardbody">
               <CardTitle className="cardtitle cardtext-color">{npc.name}</CardTitle>
               <CardSubtitle className="cardsubtitle">{STRINGS.BATTLE_LEVEL_MSG + npcLevel}</CardSubtitle>

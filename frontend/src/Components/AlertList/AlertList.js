@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './AlertList.scss';
-import {ReactComponent as AlertListStyle} from '../../Assets/CloseIcon24px.svg';
+import {ReactComponent as AlertListStyle} from '../../Assets/close_icon24px.svg';
 
 // functional component for a list of alerts, possibly errors
 function AlertList(props) {

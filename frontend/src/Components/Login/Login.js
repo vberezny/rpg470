@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Label
+} from 'reactstrap';
 import CustomPopover from '../CustomPopover/CustomPopover';
 import {
   STRINGS
@@ -13,7 +21,6 @@ import {
 } from '../../Constants/GlobalConstants';
 import './Login.scss';
 
-// Login page component
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +62,6 @@ class Login extends React.Component {
       });
     }
     const body = await response.json();
-    console.log(body);
     await this.props.handleAuthenticate();
   };
 

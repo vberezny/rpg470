@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Label
+} from 'reactstrap';
 import CustomPopover from '../CustomPopover/CustomPopover';
 import AlertList from '../AlertList/AlertList';
 import {
@@ -58,7 +66,6 @@ class Signup extends React.Component {
       });
     }
     const body = await response.json();
-    console.log(body);
 
     // After signup, automatically log the user in, and redirect to create character page
     await fetch(GLOBAL_URLS.POST_API_USERS_LOGIN, {
