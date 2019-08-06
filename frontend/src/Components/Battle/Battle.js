@@ -316,7 +316,6 @@ class Battle extends React.Component {
       const responseInventory = await fetch(`${GLOBAL_URLS.GET_API_CHARACTER_INVENTORY_PT_1}${this.props.currentCharacterName}${GLOBAL_URLS.GET_API_CHARACTER_INVENTORY_PT_2}`);
       const bodyInventory = await responseInventory.json();
       if (bodyInventory) {
-        console.log(bodyInventory);
         const consumables = bodyInventory[GLOBAL_STRINGS.INVENTORY_CONSUMABLES_API_RESPONSE_INDEX];
         let potions = [];
         consumables.forEach(consumable => {
@@ -324,7 +323,6 @@ class Battle extends React.Component {
             potions.push(consumable);
           }
         });
-        console.log(potions);
         this.setState({
           consumables,
           potions
@@ -419,7 +417,6 @@ class Battle extends React.Component {
       })
     });
     const body = await response.json();
-    console.log(body);
   };
 
 
