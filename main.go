@@ -103,6 +103,7 @@ func main() {
 	api.HandleFunc("/users/create", handlers.HandleUserCreate).Methods("POST")
 	api.HandleFunc("/characters/create", handlers.HandleCharacterCreate).Methods("POST")
 	api.HandleFunc("/characters", handlers.HandleUserCharacters).Methods("GET")
+	api.HandleFunc("/characters/{character_name}/inventory", handlers.HandleCharacterInventory).Methods("GET")
 	api.HandleFunc("/npcs", handlers.HandleGetNPCs).Methods("GET")
 	api.HandleFunc("/battles", handlers.HandleSaveBattle).Methods("POST")
 	api.HandleFunc("/battles/{character_id}", handlers.HandleCharacterBattles).Methods("GET")
