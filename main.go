@@ -15,7 +15,8 @@ import (
 	"time"
 )
 
-const STATIC = "./frontend/build"
+const BUILD = "./frontend/build"
+const ASSETS = "./frontend/public/assets"
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return h.CombinedLoggingHandler(os.Stdout, next)
@@ -107,7 +108,8 @@ func main() {
 	api.HandleFunc("/battles/{character_id}", handlers.HandleCharacterBattles).Methods("GET")
 
 	if os.Getenv("DISABLE_STATIC_FILE_SERVER") != "true" {
-		r.PathPrefix("").Handler(http.StripPrefix("", http.FileServer(http.Dir(STATIC))))
+		r.PathPrefix("/assets").Handler(http.StripPrefix("/assets", http.FileServer(http.Dir(ASSETS))))
+		r.PathPrefix("").Handler(http.StripPrefix("", http.FileServer(http.Dir(BUILD))))
 	}
 
 	// r.PathPrefix("/").Handler(http.FileServer(http.Dir("." + STATIC)))
